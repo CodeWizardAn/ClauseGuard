@@ -104,11 +104,12 @@ export default function AppShell({ children }) {
 
               {/* Dropdown Popover */}
               {menuOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0d1025]/95 backdrop-blur-2xl border border-white/10 shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0c0f2b] border border-white/15 shadow-2xl shadow-black/80 py-2 z-[100] animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="px-4 py-2.5 border-b border-white/[0.08]">
                     <p className="text-xs font-bold text-white truncate">{user.name}</p>
                     <p className="text-[11px] text-slate-400 truncate">{user.email || user.role || 'Member'}</p>
                   </div>
+
 
                   <div className="py-1">
                     <Link
