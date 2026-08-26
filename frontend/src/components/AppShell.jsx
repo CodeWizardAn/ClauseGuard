@@ -1,34 +1,46 @@
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { FileText, Lock, LogOut, Calculator, Settings, ChevronDown, User } from 'lucide-react'
 import { useAuth } from '../auth'
 import ClauseGuardLogo from './ClauseGuardLogo'
-import SiteAssistant from './SiteAssistant'
 
 export default function AppShell({ children }) {
-
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const [menuOpen, setMenuOpen] = useState(false)
-  const menuRef = useRef(null)
+  const detailsRef = useRef(null)
 
-  const handleNavigate = (path) => {
-    setMenuOpen(false)
-    navigate(path)
-  }
-
-  // Close dropdown when clicking outside (using 'click' to avoid mousedown unmount race)
+  // Automatically close dropdown on route navigation
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(false)
+    if (detailsRef.current) {
+      detailsRef.current.removeAttribute('open')
+    }
+  }, [location.pathname])
+
+  // Clean outside-click listener for native <details>
+  useEffect(() => {
+    const handleGlobalClick = (e) => {
+      if (detailsRef.current && detailsRef.current.hasAttribute('open')) {
+        if (!detailsRef.current.contains(e.target)) {
+          detailsRef.current.removeAttribute('open')
+        }
       }
     }
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
+    document.addEventListener('click', handleGlobalClick)
+    return () => document.removeEventListener('click', handleGlobalClick)
   }, [])
 
+  const closeMenu = () => {
+    if (detailsRef.current) {
+      detailsRef.current.removeAttribute('open')
+    }
+  }
+
+  const handleSignOut = () => {
+    closeMenu()
+    logout()
+    navigate('/')
+  }
 
   const initial = user?.name ? user.name.trim().charAt(0).toUpperCase() : 'U'
 
@@ -37,7 +49,9 @@ export default function AppShell({ children }) {
     { path: '/analyze', label: 'Scan Contract' },
     { path: '/calculator', label: 'Affordability' },
     { path: '/vault', label: 'Vault' },
+    { path: '/profile', label: 'Account' },
   ]
+
 
   return (
     <div className="min-h-screen app-bg flex flex-col selection:bg-purple-500/30 selection:text-white">
@@ -79,13 +93,10 @@ export default function AppShell({ children }) {
             )}
           </div>
 
-          {/* Right: Unified Executive User Menu */}
+          {/* Right: Unified Native Accessible User Menu */}
           {user && (
-            <div className="relative" ref={menuRef}>
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="flex items-center gap-2.5 py-1 px-2 rounded-xl hover:bg-white/[0.04] transition-all border border-transparent hover:border-white/10"
-              >
+            <details className="relative list-none group" ref={detailsRef}>
+              <summary className="flex items-center gap-2.5 py-1 px-2 rounded-xl hover:bg-white/[0.04] transition-all border border-transparent hover:border-white/10 cursor-pointer select-none list-none marker:hidden [&::-webkit-details-marker]:hidden">
                 {user.avatar && user.avatar.startsWith('data:image') ? (
                   <img
                     src={user.avatar}
@@ -100,61 +111,55 @@ export default function AppShell({ children }) {
                 <span className="text-xs font-semibold text-slate-200 max-w-[130px] truncate hidden sm:inline">
                   {user.name}
                 </span>
-                <ChevronDown size={14} className={`text-slate-400 transition-transform duration-200 ${menuOpen ? 'rotate-180 text-white' : ''}`} />
-              </button>
+                <ChevronDown size={14} className="text-slate-400 group-open:rotate-180 transition-transform duration-200" />
+              </summary>
 
-              {/* Dropdown Popover */}
-              {menuOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0c0f2b] border border-white/15 shadow-2xl shadow-black/80 py-2 z-[100] animate-in fade-in slide-in-from-top-2 duration-150">
-                  <div className="px-4 py-2.5 border-b border-white/[0.08]">
-                    <p className="text-xs font-bold text-white truncate">{user.name}</p>
-                    <p className="text-[11px] text-slate-400 truncate">{user.email || user.role || 'Member'}</p>
-                  </div>
-
-
-                  <div className="py-1">
-                    <button
-                      onClick={() => handleNavigate('/profile')}
-                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.07] transition-colors cursor-pointer"
-                    >
-                      <Settings size={14} className="text-purple-400 shrink-0" />
-                      <span>Account Settings</span>
-                    </button>
-
-                    <button
-                      onClick={() => handleNavigate('/vault')}
-                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.07] transition-colors cursor-pointer"
-                    >
-                      <Lock size={14} className="text-purple-400 shrink-0" />
-                      <span>Document Vault</span>
-                    </button>
-
-                    <button
-                      onClick={() => handleNavigate('/calculator')}
-                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.07] transition-colors cursor-pointer"
-                    >
-                      <Calculator size={14} className="text-purple-400 shrink-0" />
-                      <span>Affordability Calculator</span>
-                    </button>
-                  </div>
-
-                  <div className="border-t border-white/[0.08] pt-1">
-                    <button
-                      onClick={() => {
-                        setMenuOpen(false)
-                        logout()
-                        navigate('/')
-                      }}
-                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer font-medium"
-                    >
-                      <LogOut size={14} className="shrink-0" />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
+              {/* Native Dropdown Popover */}
+              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0c0f2b] border border-white/15 shadow-2xl shadow-black/90 py-2 z-[9999]">
+                <div className="px-4 py-2.5 border-b border-white/[0.08]">
+                  <p className="text-xs font-bold text-white truncate">{user.name}</p>
+                  <p className="text-[11px] text-slate-400 truncate">{user.email || user.role || 'Member'}</p>
                 </div>
-              )}
 
-            </div>
+                <div className="py-1">
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+                  >
+                    <Settings size={14} className="text-purple-400 shrink-0" />
+                    <span>Account Settings</span>
+                  </Link>
+
+                  <Link
+                    to="/vault"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+                  >
+                    <Lock size={14} className="text-purple-400 shrink-0" />
+                    <span>Document Vault</span>
+                  </Link>
+
+                  <Link
+                    to="/calculator"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+                  >
+                    <Calculator size={14} className="text-purple-400 shrink-0" />
+                    <span>Affordability Calculator</span>
+                  </Link>
+                </div>
+
+
+                <div className="border-t border-white/[0.08] pt-1">
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer font-medium"
+                  >
+                    <LogOut size={14} className="shrink-0" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              </div>
+            </details>
           )}
         </div>
       </header>
@@ -180,57 +185,36 @@ export default function AppShell({ children }) {
               </div>
             </div>
 
-            {/* Col 2: Features */}
-            <div className="space-y-2.5">
-              <p className="text-xs font-bold text-white uppercase tracking-wider">Features</p>
+            {/* Col 2: Navigation */}
+            <div>
+              <p className="text-xs font-bold text-white uppercase tracking-wider mb-3">Navigation</p>
               <ul className="space-y-2 text-xs">
-                <li>
-                  <Link to="/analyze" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
-                    <FileText size={13} className="text-purple-400" />
-                    <span>Contract Risk Scanner</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/calculator" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
-                    <Calculator size={13} className="text-purple-400" />
-                    <span>Affordability Calculator</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/vault" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
-                    <Lock size={13} className="text-purple-400" />
-                    <span>Encrypted Locker Vault</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/profile" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
-                    <Settings size={13} className="text-purple-400" />
-                    <span>Account Settings</span>
-                  </Link>
-                </li>
+                <li><Link to="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
+                <li><Link to="/analyze" className="hover:text-white transition-colors">Scan Contract</Link></li>
+                <li><Link to="/calculator" className="hover:text-white transition-colors">Affordability Calculator</Link></li>
+                <li><Link to="/vault" className="hover:text-white transition-colors">Encrypted Vault</Link></li>
               </ul>
             </div>
 
-            {/* Col 3: Capabilities */}
-            <div className="space-y-2.5">
-              <p className="text-xs font-bold text-white uppercase tracking-wider">Capabilities</p>
-              <ul className="space-y-2 text-xs text-slate-400">
-                <li>Plain-Language Translations</li>
-                <li>Affordability & Income Math</li>
-                <li>Missing Protections Audit</li>
-                <li>Negotiation Guidance</li>
+            {/* Col 3: Intelligence Tools */}
+            <div>
+              <p className="text-xs font-bold text-white uppercase tracking-wider mb-3">Intelligence</p>
+              <ul className="space-y-2 text-xs">
+                <li><Link to="/comparison" className="hover:text-white transition-colors">Draft Comparison (Diff)</Link></li>
+                <li><Link to="/glossary" className="hover:text-white transition-colors">Legal Glossary</Link></li>
+                <li><Link to="/profile" className="hover:text-white transition-colors">Security & Settings</Link></li>
               </ul>
             </div>
 
-            {/* Col 4: Privacy & Notice */}
-            <div className="space-y-2.5">
-              <p className="text-xs font-bold text-white uppercase tracking-wider">Privacy & Terms</p>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                ClauseGuard is an educational reading aid for awareness. Outputs do not constitute formal legal counsel.
-              </p>
-              <p className="text-[11px] text-slate-500">
-                Personal identities, numbers, and names are erased before analysis.
-              </p>
+            {/* Col 4: Platform Security */}
+            <div>
+              <p className="text-xs font-bold text-white uppercase tracking-wider mb-3">Security Standards</p>
+              <div className="space-y-2 text-xs text-slate-400">
+                <p>• Client-Side PII Scrubbing</p>
+                <p>• AES-256 GCM Local Encryption</p>
+                <p>• 4-Digit Vault PIN Protection</p>
+                <p>• Zero Personal Data Stored</p>
+              </div>
             </div>
           </div>
 
@@ -245,5 +229,3 @@ export default function AppShell({ children }) {
     </div>
   )
 }
-
-
