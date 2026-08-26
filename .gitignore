@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+venv/
+.venv/
+env/
+__pycache__/
+*/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build Outputs
+dist/
+frontend/dist/
+build/
+.vite/
+
+# Secrets & Security
+.env
+backend/.env
+.data_key
+backend/.data_key
+
+# Database & Local Vault Storage
+*.db
+clauseguard.db
+backend/clauseguard.db
+chroma_db/
+backend/chroma_db/
+uploads/
+backend/uploads/
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.sixth/

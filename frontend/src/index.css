@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  background: #0c1118;
+  color: #e8e4dc;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+p, span, button, input, label, li, td, th {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.app-bg {
+  position: relative;
+  background: #0c1118;
+}
+
+.app-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes ambient-1 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(80px, 60px) scale(1.15);
+  }
+  66% {
+    transform: translate(-50px, 100px) scale(0.92);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes ambient-2 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-90px, 80px) scale(1.1);
+  }
+  66% {
+    transform: translate(40px, -60px) scale(0.95);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes ambient-3 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(70px, -80px) scale(1.18);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes ambient-4 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(-60px, -50px) scale(1.12);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0.1;
+    transform: rotate(0deg);
+  }
+  50% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.1;
+    transform: rotate(360deg);
+  }
+}
+
+.animate-ambient-1 {
+  animation: ambient-1 22s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.animate-ambient-2 {
+  animation: ambient-2 26s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.animate-ambient-3 {
+  animation: ambient-3 20s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.animate-ambient-4 {
+  animation: ambient-4 24s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.animate-shimmer {
+  animation: shimmer 40s linear infinite;
+  will-change: transform, opacity;
+}
+
+
+.card {
+  background: rgba(18, 24, 34, 0.86);
+  border: 1px solid rgba(232, 228, 220, 0.08);
+  border-radius: 20px;
+}
+
+.input {
+  width: 100%;
+  background: #0b1017;
+  border: 1px solid rgba(232, 228, 220, 0.12);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #f4f1ea;
+  font-size: 15px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #c4a574;
+}
+
+.btn-primary {
+  background: #c4a574;
+  color: #14110c;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 12px 18px;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.btn-primary:hover { background: #d4b98a; }
+.btn-primary:disabled { opacity: 0.5; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0c1118; }
+::-webkit-scrollbar-thumb { background: #c4a574; border-radius: 4px; }

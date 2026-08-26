@@ -1,0 +1,6 @@
+.env
+.data_key
+
+uploads/
+legal_embeddings.json
+clause_dataset_embeddings.json

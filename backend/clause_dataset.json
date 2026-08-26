@@ -1,0 +1,209 @@
+[
+  {
+    "id": "LIB001",
+    "category": "Liability",
+    "risk_level": "Critical",
+    "risk_score": 95,
+    "clause_text": "Vendor's total liability under this Agreement shall not exceed Rs. 500 regardless of the nature or severity of the claim.",
+    "why_risky": "Liability cap of Rs. 500 is unreasonably low and contradicts ICA Section 73 which mandates reasonable compensation for breach.",
+    "safe_version": "Vendor's total liability shall not exceed the total fees paid under this Agreement in the preceding 12 months."
+  },
+  {
+    "id": "LIB002",
+    "category": "Liability",
+    "risk_level": "Critical",
+    "risk_score": 90,
+    "clause_text": "Client shall face no liability whatsoever for any damages caused to Vendor under any circumstances.",
+    "why_risky": "Completely one-sided liability exclusion. Unenforceable under ICA Section 23 as it violates principles of fairness.",
+    "safe_version": "Each party shall be liable for damages caused by their own negligence or willful misconduct."
+  },
+  {
+    "id": "LIB003",
+    "category": "Liability",
+    "risk_level": "High",
+    "risk_score": 75,
+    "clause_text": "In no event shall either party be liable for any indirect, incidental, or consequential damages.",
+    "why_risky": "Broad exclusion of consequential damages may leave injured party with no meaningful remedy under ICA Section 73.",
+    "safe_version": "Neither party shall be liable for indirect damages except in cases of gross negligence or willful misconduct."
+  },
+  {
+    "id": "PAY001",
+    "category": "Payment",
+    "risk_level": "Critical",
+    "risk_score": 92,
+    "clause_text": "Client reserves the right to withhold payment indefinitely if it determines in its sole discretion that services were unsatisfactory.",
+    "why_risky": "Unilateral indefinite payment withholding violates MSME Act Section 15 and ICA Section 73.",
+    "safe_version": "Client may withhold disputed amounts only, with disputes resolved within 30 days through mutual negotiation."
+  },
+  {
+    "id": "PAY002",
+    "category": "Payment",
+    "risk_level": "High",
+    "risk_score": 78,
+    "clause_text": "Client shall pay Vendor within 90 days of invoice receipt. No interest shall accrue on late payments.",
+    "why_risky": "90-day payment terms violate MSME Act Section 15 which mandates 45-day maximum. No interest clause further disadvantages vendor.",
+    "safe_version": "Client shall pay Vendor within 45 days of invoice receipt. Late payments shall accrue compound interest at three times RBI bank rate per MSME Act Section 16."
+  },
+  {
+    "id": "PAY003",
+    "category": "Payment",
+    "risk_level": "High",
+    "risk_score": 72,
+    "clause_text": "Client may set off any amounts owed by Vendor against payments due to Vendor without prior notice.",
+    "why_risky": "Unilateral set-off without notice or dispute resolution process can be used to avoid legitimate payment obligations.",
+    "safe_version": "Either party may set off amounts only after providing 30 days written notice and exhausting dispute resolution procedures."
+  },
+  {
+    "id": "TER001",
+    "category": "Termination",
+    "risk_level": "Critical",
+    "risk_score": 93,
+    "clause_text": "Client may terminate this Agreement at any time without notice and without cause. Upon termination Vendor forfeits all unpaid invoices.",
+    "why_risky": "Immediate termination with invoice forfeiture is void under ICA Section 73. Vendor entitled to compensation for work done.",
+    "safe_version": "Either party may terminate with 30 days written notice. Vendor shall be paid for all work completed prior to termination date."
+  },
+  {
+    "id": "TER002",
+    "category": "Termination",
+    "risk_level": "Critical",
+    "risk_score": 88,
+    "clause_text": "Vendor may not terminate this Agreement for any reason during the first 24 months.",
+    "why_risky": "24-month lock-in with no exit right for Vendor is heavily one-sided and above Indian market standard of 30-90 days.",
+    "safe_version": "Either party may terminate for cause with 30 days notice. Vendor may terminate for convenience after 6 months with 60 days notice."
+  },
+  {
+    "id": "TER003",
+    "category": "Termination",
+    "risk_level": "High",
+    "risk_score": 70,
+    "clause_text": "Client may terminate immediately upon written notice if Vendor fails to meet any performance metric.",
+    "why_risky": "Immediate termination for any performance failure without cure period is disproportionate and one-sided.",
+    "safe_version": "Client may issue written notice of performance failure. Vendor shall have 30 days cure period before termination takes effect."
+  },
+  {
+    "id": "CON001",
+    "category": "Confidentiality",
+    "risk_level": "Critical",
+    "risk_score": 90,
+    "clause_text": "Vendor shall keep all Client information strictly confidential for a period of lifetime.",
+    "why_risky": "Lifetime confidentiality obligations are rarely enforceable in Indian courts and may constitute restraint of trade under ICA Section 27.",
+    "safe_version": "Vendor shall maintain confidentiality for 5 years from disclosure date. Obligation survives termination for the same period."
+  },
+  {
+    "id": "CON002",
+    "category": "Confidentiality",
+    "risk_level": "High",
+    "risk_score": 75,
+    "clause_text": "Confidential Information includes all information shared verbally or in writing with no requirement for marking.",
+    "why_risky": "Overly broad definition with no marking requirement makes it impossible to know what is confidential, creating undue burden.",
+    "safe_version": "Confidential Information means information marked as confidential at time of disclosure or confirmed in writing within 7 days of verbal disclosure."
+  },
+  {
+    "id": "CON003",
+    "category": "Confidentiality",
+    "risk_level": "High",
+    "risk_score": 68,
+    "clause_text": "Receiving Party shall not disclose Confidential Information to any third party without prior written consent.",
+    "why_risky": "No carve-out for legally required disclosure to courts or regulators creates conflict with Indian legal obligations.",
+    "safe_version": "Receiving Party shall not disclose Confidential Information except where required by law, court order, or regulatory authority, with prior notice to Disclosing Party where permitted."
+  },
+  {
+    "id": "IP001",
+    "category": "IP Ownership",
+    "risk_level": "Critical",
+    "risk_score": 92,
+    "clause_text": "All work product inventions code designs and deliverables created by Vendor shall become exclusive property of Client immediately upon creation. Vendor waives all moral rights permanently.",
+    "why_risky": "Blanket IP assignment with moral rights waiver conflicts with Indian Copyright Act Section 57. Moral rights cannot be fully waived under Indian law.",
+    "safe_version": "Client shall own all work product created specifically for this engagement. Vendor retains ownership of pre-existing IP and tools. Moral rights acknowledged per Copyright Act Section 57."
+  },
+  {
+    "id": "IP002",
+    "category": "IP Ownership",
+    "risk_level": "High",
+    "risk_score": 76,
+    "clause_text": "Vendor grants Client an irrevocable perpetual royalty-free license to use all Vendor tools and software.",
+    "why_risky": "Perpetual irrevocable license to all vendor tools without compensation or scope limitation is disproportionate.",
+    "safe_version": "Vendor grants Client a non-exclusive license to use Vendor tools solely for purposes of this engagement during the contract term."
+  },
+  {
+    "id": "GOV001",
+    "category": "Governing Law",
+    "risk_level": "Critical",
+    "risk_score": 88,
+    "clause_text": "This Agreement shall be governed by the laws of the State of Delaware USA. All disputes shall be resolved exclusively in courts located in Delaware USA.",
+    "why_risky": "Foreign jurisdiction clause for Indian parties may violate ICA Section 28 which voids agreements restricting access to Indian courts.",
+    "safe_version": "This Agreement shall be governed by Indian law. Disputes shall be resolved in courts of competent jurisdiction in Mumbai, India."
+  },
+  {
+    "id": "GOV002",
+    "category": "Governing Law",
+    "risk_level": "High",
+    "risk_score": 72,
+    "clause_text": "Any disputes shall be resolved by arbitration in Singapore under ICC rules.",
+    "why_risky": "Foreign arbitration seat adds significant cost burden for Indian parties and may conflict with Indian Arbitration Act provisions.",
+    "safe_version": "Disputes shall be resolved by arbitration in Mumbai under Indian Arbitration and Conciliation Act 1996."
+  },
+  {
+    "id": "IND001",
+    "category": "Indemnity",
+    "risk_level": "Critical",
+    "risk_score": 91,
+    "clause_text": "Vendor shall indemnify Client from any and all claims damages losses and expenses including attorneys fees arising from Vendors performance whether or not caused by Clients negligence.",
+    "why_risky": "Indemnity covering Client's own negligence is unenforceable under ICA Section 23 as it violates public policy principles.",
+    "safe_version": "Vendor shall indemnify Client solely for claims arising from Vendor's gross negligence or willful misconduct. Client indemnifies Vendor for Client's own negligence."
+  },
+  {
+    "id": "IND002",
+    "category": "Indemnity",
+    "risk_level": "High",
+    "risk_score": 73,
+    "clause_text": "Vendor shall indemnify Client for all third party intellectual property infringement claims without limitation.",
+    "why_risky": "Unlimited IP indemnity without cap or carve-out for Client-provided specifications exposes Vendor to disproportionate risk.",
+    "safe_version": "Vendor indemnifies Client for IP infringement arising from Vendor's work, capped at total contract value, excluding claims arising from Client specifications."
+  },
+  {
+    "id": "FOR001",
+    "category": "Force Majeure",
+    "risk_level": "Critical",
+    "risk_score": 89,
+    "clause_text": "Force majeure shall not apply to payment obligations. Client is not required to pay Vendor even if unable to receive services due to circumstances beyond Vendors control.",
+    "why_risky": "Excluding payment from force majeure while keeping service delivery obligation one-sided contradicts ICA Section 56 on impossible contracts.",
+    "safe_version": "Force majeure suspends obligations for both parties. Payment obligations are pro-rated for services rendered prior to force majeure event."
+  },
+  {
+    "id": "FOR002",
+    "category": "Force Majeure",
+    "risk_level": "High",
+    "risk_score": 65,
+    "clause_text": "Force majeure events include acts of God war and natural disasters but not pandemic epidemic or government action.",
+    "why_risky": "Post-COVID Indian courts require explicit inclusion of pandemic and government action in force majeure definitions.",
+    "safe_version": "Force majeure includes acts of God, war, natural disasters, pandemic, epidemic, and government actions that make performance impossible or illegal."
+  },
+  {
+    "id": "GEN001",
+    "category": "General",
+    "risk_level": "Critical",
+    "risk_score": 90,
+    "clause_text": "Vendor shall not work with any company in any industry anywhere in the world for a period of 5 years after termination.",
+    "why_risky": "Global non-compete for 5 years is void under ICA Section 27 which prohibits agreements in restraint of trade.",
+    "safe_version": "Vendor shall not solicit Client's existing customers in the same geographic region for 1 year post termination."
+  },
+  {
+    "id": "GEN002",
+    "category": "General",
+    "risk_level": "High",
+    "risk_score": 70,
+    "clause_text": "Client may modify the scope of services at any time without notice and without adjustment to fees or timeline.",
+    "why_risky": "Unilateral scope modification without fee adjustment creates unlimited obligation for Vendor without compensation.",
+    "safe_version": "Scope modifications require mutual written agreement with corresponding adjustments to fees and timeline."
+  },
+  {
+    "id": "GEN003",
+    "category": "General",
+    "risk_level": "Medium",
+    "risk_score": 45,
+    "clause_text": "This Agreement may be assigned by Client to any third party without Vendor consent.",
+    "why_risky": "Unilateral assignment without consent could transfer Vendor obligations to an unknown third party.",
+    "safe_version": "Neither party may assign this Agreement without prior written consent of the other party, not to be unreasonably withheld."
+  }
+]
