@@ -84,51 +84,43 @@ export default function SmartContext() {
 
   return (
     <AppShell>
-      <div className="max-w-2xl mx-auto px-6 py-10 pb-24">
+      <div className="max-w-2xl mx-auto px-6 py-8 pb-20">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#c4a574]/10 border border-[#c4a574]/30 text-[#c4a574] text-xs font-semibold uppercase tracking-wider mb-4">
-            <Sparkles size={14} /> Smart Personalized Analysis
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#f4f1ea] tracking-tight mb-2">
-            Let’s check if this is truly affordable for you
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-zinc-100 tracking-tight">
+            Financial & Contextual Details
           </h1>
-          <p className="text-stone-400 text-sm max-w-lg mx-auto leading-relaxed">
-            We extracted the exact commitments from your document. Answer these quick questions so our AI can give advice for your real life.
+          <p className="text-xs text-zinc-400 mt-1 max-w-lg leading-relaxed">
+            Answer a few quick questions so we can calculate exact affordability ratios against the obligations extracted from this agreement.
           </p>
         </div>
 
-
-
         {/* Detected Contract Snapshot */}
         {(summary.primary_obligation || badges.length > 0) && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="card p-5 mb-8 border-[#c4a574]/20 bg-gradient-to-br from-[#121922] to-[#0c1118]"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <ShieldCheck size={16} className="text-[#c4a574]" />
-              <p className="text-xs uppercase tracking-widest text-[#c4a574] font-semibold">Detected from Document</p>
+          <div className="card p-4.5 mb-6 border-zinc-800 bg-zinc-900/40">
+            <div className="flex items-center gap-2 mb-2.5">
+              <ShieldCheck size={15} className="text-zinc-400" />
+              <p className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">Extracted Obligations</p>
             </div>
             
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-2.5">
               {badges.map((b, i) => (
-                <div key={i} className="bg-white/5 rounded-xl p-3 border border-white/5">
-                  <p className="text-xs text-stone-500 mb-0.5">{b.label}</p>
-                  <p className="text-sm font-semibold text-[#f4f1ea] truncate">{b.value}</p>
+                <div key={i} className="bg-zinc-950/80 rounded-lg p-2.5 border border-zinc-800">
+                  <p className="text-[11px] text-zinc-500 mb-0.5">{b.label}</p>
+                  <p className="text-xs font-semibold text-zinc-200 truncate">{b.value}</p>
                 </div>
               ))}
             </div>
 
             {summary.key_risk_factor && (
-              <p className="text-xs text-amber-300/90 flex items-start gap-1.5 mt-2 bg-amber-400/10 p-2.5 rounded-lg border border-amber-400/20">
-                <AlertTriangle size={14} className="shrink-0 mt-0.5" />
-                <span><strong className="text-amber-200">Key Observation:</strong> {summary.key_risk_factor}</span>
+              <p className="text-xs text-zinc-300 flex items-start gap-1.5 mt-2 bg-zinc-950 p-2.5 rounded border border-zinc-800">
+                <AlertTriangle size={13} className="shrink-0 mt-0.5 text-amber-400" />
+                <span><strong className="text-zinc-200">Key Note:</strong> {summary.key_risk_factor}</span>
               </p>
             )}
-          </motion.div>
+          </div>
         )}
+
 
         {/* Dynamic Form */}
         <form onSubmit={handleSubmit} className="space-y-6">

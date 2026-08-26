@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { FileSearch, FolderLock, BookOpen, GitCompare, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react'
+import { FileText, Lock, BookOpen, GitCompare, ArrowRight, ShieldCheck } from 'lucide-react'
 import AppShell from '../components/AppShell'
 import { useAuth } from '../auth'
 
@@ -9,85 +9,79 @@ export default function Dashboard() {
 
   return (
     <AppShell>
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        {/* Welcome Header */}
-        <div className="mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/25 text-[#d4af37] text-xs font-semibold uppercase tracking-wider mb-3">
-            <Sparkles size={13} /> Active Legal Intelligence Session
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
-            Welcome, {user?.name?.split(' ')[0] || 'Member'}
+      <div className="max-w-4xl mx-auto px-6 py-10">
+        {/* Header */}
+        <div className="mb-8 border-b border-zinc-800/80 pb-6">
+          <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider mb-1">Overview</p>
+          <h1 className="text-2xl font-bold text-zinc-100 tracking-tight">
+            Welcome, {user?.name || 'User'}
           </h1>
-          <p className="text-slate-400 text-sm max-w-xl leading-relaxed">
-            Upload legal agreements for plain-language risk breakdowns, number-driven affordability calculations, and statutory Indian law protection audits.
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
+            Analyze contracts for legal risks, calculate affordability commitments, and verify statutory protections.
           </p>
         </div>
 
-        {/* Primary Action Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Card 1: Analyze Document */}
+        {/* Action Grid */}
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* Card 1: Analyze */}
           <button 
             onClick={() => navigate('/analyze')} 
-            className="card p-8 text-left group hover:border-[#d4af37]/40 relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-[#d4af37]/10"
+            className="card p-6 text-left group hover:border-zinc-700 transition-all flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-[#d4af37]/15 border border-[#d4af37]/30 text-[#d4af37] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <FileSearch size={22} className="stroke-[2.2]" />
+            <div>
+              <div className="w-10 h-10 rounded-lg bg-zinc-800/80 border border-zinc-700/80 text-zinc-200 flex items-center justify-center mb-4 group-hover:text-white group-hover:border-zinc-600 transition-colors">
+                <FileText size={18} />
               </div>
-              <span className="text-xs font-semibold text-[#d4af37] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                Start Audit <ArrowRight size={14} />
-              </span>
+              <h2 className="text-base font-semibold text-zinc-100 mb-1.5 flex items-center justify-between">
+                <span>Analyze Contract</span>
+                <ArrowRight size={14} className="text-zinc-500 group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all" />
+              </h2>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Upload a rental agreement, loan agreement, employment offer, or vendor contract to extract obligations and detect risks.
+              </p>
             </div>
-            <h2 className="text-xl font-bold text-white mb-2 group-hover:text-[#d4af37] transition-colors">
-              1. Audit a Document
-            </h2>
-            <p className="text-sm text-slate-400 leading-relaxed">
-              Upload a rental agreement, home loan, employment offer, or vendor terms. We extract obligations, detect missing protections, and calculate real affordability.
-            </p>
           </button>
 
-          {/* Card 2: Secure Vault */}
+          {/* Card 2: Vault */}
           <button 
             onClick={() => navigate('/vault')} 
-            className="card p-8 text-left group hover:border-blue-500/40 relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10"
+            className="card p-6 text-left group hover:border-zinc-700 transition-all flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <FolderLock size={22} className="stroke-[2.2]" />
+            <div>
+              <div className="w-10 h-10 rounded-lg bg-zinc-800/80 border border-zinc-700/80 text-zinc-200 flex items-center justify-center mb-4 group-hover:text-white group-hover:border-zinc-600 transition-colors">
+                <Lock size={18} />
               </div>
-              <span className="text-xs font-semibold text-blue-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                Open Locker <ArrowRight size={14} />
-              </span>
+              <h2 className="text-base font-semibold text-zinc-100 mb-1.5 flex items-center justify-between">
+                <span>Document Vault</span>
+                <ArrowRight size={14} className="text-zinc-500 group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all" />
+              </h2>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Access your past document analyses and generated PDF reports protected by your 4-digit PIN.
+              </p>
             </div>
-            <h2 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
-              2. Encrypted Vault
-            </h2>
-            <p className="text-sm text-slate-400 leading-relaxed">
-              Access your previous contract analyses and reports. Protected with your private 4-digit PIN with zero-knowledge PII sanitization.
-            </p>
           </button>
         </div>
 
-        {/* Quick Tools Bar */}
-        <div className="mt-8 p-4.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
-            <ShieldCheck size={16} className="text-emerald-400" />
-            <span>28 Indian Acts · Zero PII Stored · Client-Side Redacted</span>
+        {/* Tools row */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 p-4 rounded-lg bg-zinc-900/40 border border-zinc-800/80 text-xs">
+          <div className="flex items-center gap-2 text-zinc-400">
+            <ShieldCheck size={15} className="text-zinc-400" />
+            <span>28 Indian Acts Reference · Zero PII Retained</span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-semibold">
+          <div className="flex items-center gap-4 text-zinc-400 font-medium">
             <button 
               onClick={() => navigate('/glossary')} 
-              className="text-slate-400 hover:text-[#d4af37] flex items-center gap-1.5 transition-colors"
+              className="hover:text-zinc-200 flex items-center gap-1.5 transition-colors"
             >
-              <BookOpen size={14} /> Legal Glossary
+              <BookOpen size={13} /> Legal Glossary
             </button>
-            <span className="text-slate-700">·</span>
+            <span className="text-zinc-700">·</span>
             <button 
               onClick={() => navigate('/comparison')} 
-              className="text-slate-400 hover:text-[#d4af37] flex items-center gap-1.5 transition-colors"
+              className="hover:text-zinc-200 flex items-center gap-1.5 transition-colors"
             >
-              <GitCompare size={14} /> Compare 2 Drafts
+              <GitCompare size={13} /> Compare Drafts
             </button>
           </div>
         </div>
