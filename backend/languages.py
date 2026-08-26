@@ -11,6 +11,6 @@ SUPPORTED_LANGUAGES = {
     "pa": "Punjabi",
 }
 
-# Universally supported, ultra-fast Groq production model
-FAST_MODEL = "llama-3.1-8b-instant"
-REASONING_MODEL = "llama-3.1-8b-instant"
+# Production Multilingual Model active on Groq API
+FAST_MODEL = "qwen/qwen3.8-27b"
+REASONING_MODEL = "qwen/qwen3.8-27b"
