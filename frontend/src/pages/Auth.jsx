@@ -63,27 +63,29 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen app-bg flex flex-col justify-between selection:bg-[#d4af37]/30 selection:text-white">
+    <div className="min-h-screen app-bg flex flex-col justify-between selection:bg-purple-500/30 selection:text-white">
       <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
         <div className="w-full max-w-md">
+          {/* Header */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#d4af37] to-[#b89125] text-[#070a10] flex items-center justify-center mb-4 p-3 shadow-xl shadow-[#d4af37]/20">
-              <Shield size={26} className="stroke-[2.5]" />
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7c3aed] to-[#4f46e5] text-white flex items-center justify-center mb-4 p-3 shadow-xl shadow-purple-500/30">
+              <Shield size={28} className="stroke-[2.5]" />
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight text-center">
-              ClauseGuard
+              Clause<span className="text-gradient-purple">Guard</span>
             </h1>
             <p className="text-slate-400 text-sm mt-2 text-center max-w-sm leading-relaxed">
-              {isLogin ? 'Welcome back. Log in to audit your contracts.' : 'Create your secure account. We encrypt your personal data.'}
+              {isLogin ? 'Sign in to access your contract analyses.' : 'Create your account. Zero-knowledge PII protection.'}
             </p>
           </div>
 
-          <form onSubmit={submit} className="card p-7 sm:p-8 space-y-4.5">
+          {/* Form */}
+          <form onSubmit={submit} className="card p-7 sm:p-8 space-y-4 border-purple-500/20">
             {!isLogin && (
               <>
                 <div>
                   <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Full name</label>
-                  <input className="input" value={form.name} onChange={set('name')} placeholder="Your legal or full name" />
+                  <input className="input" value={form.name} onChange={set('name')} placeholder="Your legal name" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -99,12 +101,12 @@ export default function Auth() {
             )}
             <div>
               <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Email Address</label>
-              <input className="input" type="email" value={form.email} onChange={set('email')} placeholder="name@domain.com" />
+              <input className="input" type="email" value={form.email} onChange={set('email')} placeholder="you@domain.com" />
             </div>
             <div>
               <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Password</label>
-              <input className="input" type="password" value={form.password} onChange={set('password')} placeholder="Starts with a capital letter" />
-              <p className="text-[11px] text-slate-500 mt-1.5">Minimum 6 characters. First letter capital (e.g. Secret1)</p>
+              <input className="input" type="password" value={form.password} onChange={set('password')} placeholder="Starts with capital letter" />
+              <p className="text-[11px] text-slate-500 mt-1.5">Minimum 6 characters. First letter capital (e.g. Pass12)</p>
             </div>
             {error && (
               <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
@@ -112,18 +114,18 @@ export default function Auth() {
               </div>
             )}
             <button type="submit" disabled={busy} className="btn-primary w-full mt-2 py-3">
-              {busy ? 'Securing session…' : isLogin ? 'Sign In to ClauseGuard' : 'Create Account'}
+              {busy ? 'Securing session…' : isLogin ? 'Sign In' : 'Create Account'}
             </button>
           </form>
 
           <p className="text-center text-sm text-slate-400 mt-6">
-            {isLogin ? 'New to ClauseGuard?' : 'Already registered?'}
+            {isLogin ? 'New to ClauseGuard?' : 'Already have an account?'}
             <button 
               type="button" 
-              className="text-[#d4af37] font-semibold ml-2 hover:underline focus:outline-none" 
+              className="text-purple-400 hover:text-purple-300 font-semibold ml-2 underline focus:outline-none" 
               onClick={() => { setIsLogin(!isLogin); setError('') }}
             >
-              {isLogin ? 'Create an account' : 'Sign in'}
+              {isLogin ? 'Register now' : 'Sign in'}
             </button>
           </p>
         </div>
@@ -133,5 +135,4 @@ export default function Auth() {
       </footer>
     </div>
   )
-
 }

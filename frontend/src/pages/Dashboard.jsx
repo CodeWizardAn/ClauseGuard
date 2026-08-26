@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { FileText, Lock, BookOpen, GitCompare, ArrowRight, ShieldCheck } from 'lucide-react'
+import { FileText, Lock, BookOpen, GitCompare, ArrowRight, ShieldCheck, Zap, Scale } from 'lucide-react'
 import AppShell from '../components/AppShell'
 import { useAuth } from '../auth'
 
@@ -9,79 +9,129 @@ export default function Dashboard() {
 
   return (
     <AppShell>
-      <div className="max-w-4xl mx-auto px-6 py-10">
-        {/* Header */}
-        <div className="mb-8 border-b border-zinc-800/80 pb-6">
-          <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider mb-1">Overview</p>
-          <h1 className="text-2xl font-bold text-zinc-100 tracking-tight">
-            Welcome, {user?.name || 'User'}
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        {/* Hero Section */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-purple-300 text-xs font-semibold uppercase tracking-wider mb-4">
+            <Zap size={13} className="text-purple-400" /> AI-Powered Contract Intelligence
+          </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
+            Analyze Contracts with <span className="text-gradient-purple">Full Confidence</span>
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
-            Analyze contracts for legal risks, calculate affordability commitments, and verify statutory protections.
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
+            Welcome, {user?.name?.split(' ')[0] || 'User'}. Understand risks, calculate financial commitments, and audit missing protections before signing.
+          </p>
+
+          <div className="flex items-center justify-center gap-3">
+            <button 
+              onClick={() => navigate('/analyze')} 
+              className="btn-primary !px-6 !py-3 text-sm flex items-center gap-2"
+            >
+              <FileText size={16} />
+              <span>Audit Document</span>
+            </button>
+            <button 
+              onClick={() => navigate('/vault')} 
+              className="btn-secondary !px-5 !py-3 text-sm flex items-center gap-2"
+            >
+              <Lock size={15} />
+              <span>Open Vault</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 3 Core Highlight Feature Cards (matching reference layout) */}
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-white mb-1">
+            Secure & Reliable Analysis
+          </h2>
+          <p className="text-xs text-slate-400">
+            Backed by 28 Indian Statutes & Plain Language Intelligence
           </p>
         </div>
 
-        {/* Action Grid */}
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Card 1: Analyze */}
-          <button 
-            onClick={() => navigate('/analyze')} 
-            className="card p-6 text-left group hover:border-zinc-700 transition-all flex flex-col justify-between"
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {/* Card 1: Risk Scoring (Amber Halo) */}
+          <div 
+            onClick={() => navigate('/analyze')}
+            className="card card-halo-amber p-6 text-center group cursor-pointer hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
           >
-            <div>
-              <div className="w-10 h-10 rounded-lg bg-zinc-800/80 border border-zinc-700/80 text-zinc-200 flex items-center justify-center mb-4 group-hover:text-white group-hover:border-zinc-600 transition-colors">
-                <FileText size={18} />
-              </div>
-              <h2 className="text-base font-semibold text-zinc-100 mb-1.5 flex items-center justify-between">
-                <span>Analyze Contract</span>
-                <ArrowRight size={14} className="text-zinc-500 group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all" />
-              </h2>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Upload a rental agreement, loan agreement, employment offer, or vendor contract to extract obligations and detect risks.
-              </p>
+            {/* Floating Top Circular Badge */}
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform">
+              <Scale size={22} className="stroke-[2.5]" />
             </div>
-          </button>
-
-          {/* Card 2: Vault */}
-          <button 
-            onClick={() => navigate('/vault')} 
-            className="card p-6 text-left group hover:border-zinc-700 transition-all flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-10 h-10 rounded-lg bg-zinc-800/80 border border-zinc-700/80 text-zinc-200 flex items-center justify-center mb-4 group-hover:text-white group-hover:border-zinc-600 transition-colors">
-                <Lock size={18} />
-              </div>
-              <h2 className="text-base font-semibold text-zinc-100 mb-1.5 flex items-center justify-between">
-                <span>Document Vault</span>
-                <ArrowRight size={14} className="text-zinc-500 group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all" />
-              </h2>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Access your past document analyses and generated PDF reports protected by your 4-digit PIN.
-              </p>
-            </div>
-          </button>
-        </div>
-
-        {/* Tools row */}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 p-4 rounded-lg bg-zinc-900/40 border border-zinc-800/80 text-xs">
-          <div className="flex items-center gap-2 text-zinc-400">
-            <ShieldCheck size={15} className="text-zinc-400" />
-            <span>28 Indian Acts Reference · Zero PII Retained</span>
+            <h3 className="text-lg font-bold text-white mb-2">
+              Risk Breakdown
+            </h3>
+            <p className="text-xs text-slate-400 leading-relaxed mb-5">
+              Identifies one-sided penalty terms, unfair lock-in clauses, and arbitrary termination conditions.
+            </p>
+            <span className="text-xs font-semibold text-purple-400 group-hover:text-purple-300 flex items-center justify-center gap-1">
+              Start Audit <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+            </span>
           </div>
 
-          <div className="flex items-center gap-4 text-zinc-400 font-medium">
+          {/* Card 2: Fast Intelligence (Purple Halo) */}
+          <div 
+            onClick={() => navigate('/analyze')}
+            className="card card-halo-purple p-6 text-center group cursor-pointer hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+          >
+            {/* Floating Top Circular Badge */}
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex items-center justify-center mx-auto mb-5 shadow-lg shadow-purple-500/40 group-hover:scale-110 transition-transform">
+              <Zap size={22} className="stroke-[2.5]" />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">
+              Smart Affordability
+            </h3>
+            <p className="text-xs text-slate-400 leading-relaxed mb-5">
+              Calculates real monthly commitments, income ratios, and safety buffers based on your city.
+            </p>
+            <span className="text-xs font-semibold text-purple-400 group-hover:text-purple-300 flex items-center justify-center gap-1">
+              Calculate Math <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+            </span>
+          </div>
+
+          {/* Card 3: Encrypted Vault (Cyan/Red Halo) */}
+          <div 
+            onClick={() => navigate('/vault')}
+            className="card card-halo-cyan p-6 text-center group cursor-pointer hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+          >
+            {/* Floating Top Circular Badge */}
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center mx-auto mb-5 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+              <Lock size={20} className="stroke-[2.5]" />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">
+              Private Vault
+            </h3>
+            <p className="text-xs text-slate-400 leading-relaxed mb-5">
+              Zero PII stored. Personal data is automatically stripped and your reports are protected by your 4-digit PIN.
+            </p>
+            <span className="text-xs font-semibold text-purple-400 group-hover:text-purple-300 flex items-center justify-center gap-1">
+              Unlock Vault <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+            </span>
+          </div>
+        </div>
+
+        {/* Quick Tools Row */}
+        <div className="card p-4 flex flex-wrap items-center justify-between gap-4 border-purple-500/15">
+          <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+            <ShieldCheck size={16} className="text-purple-400" />
+            <span>28 Indian Acts Reference · Client-Side Sanitized</span>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs font-semibold">
             <button 
               onClick={() => navigate('/glossary')} 
-              className="hover:text-zinc-200 flex items-center gap-1.5 transition-colors"
+              className="text-slate-400 hover:text-purple-300 flex items-center gap-1.5 transition-colors"
             >
-              <BookOpen size={13} /> Legal Glossary
+              <BookOpen size={14} /> Legal Glossary
             </button>
-            <span className="text-zinc-700">·</span>
+            <span className="text-slate-700">·</span>
             <button 
               onClick={() => navigate('/comparison')} 
-              className="hover:text-zinc-200 flex items-center gap-1.5 transition-colors"
+              className="text-slate-400 hover:text-purple-300 flex items-center gap-1.5 transition-colors"
             >
-              <GitCompare size={13} /> Compare Drafts
+              <GitCompare size={14} /> Compare 2 Drafts
             </button>
           </div>
         </div>

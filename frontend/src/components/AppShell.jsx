@@ -13,22 +13,27 @@ export default function AppShell({ children }) {
 
   return (
     <div className="min-h-screen app-bg flex flex-col">
-      {/* Navigation Header */}
-      <header className="border-b border-[#222226] bg-[#09090b]/90 backdrop-blur-md px-6 py-3 sticky top-0 z-40">
+      {/* Top Navigation */}
+      <header className="border-b border-purple-500/15 bg-[#0b0e1e]/80 backdrop-blur-xl px-6 py-4 sticky top-0 z-40">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link to="/dashboard" className="flex items-center gap-2.5 text-zinc-100 hover:text-white transition-colors">
-            <div className="w-7 h-7 rounded-md bg-zinc-800 border border-zinc-700 text-zinc-100 flex items-center justify-center">
-              <Shield size={15} />
+          <Link to="/dashboard" className="flex items-center gap-3 group">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#4f46e5] text-white flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-transform">
+              <Shield size={16} className="stroke-[2.5]" />
             </div>
-            <span className="font-semibold text-sm tracking-tight">ClauseGuard</span>
+            <span className="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
+              Clause<span className="text-gradient-purple font-extrabold">Guard</span>
+            </span>
           </Link>
 
           {user && (
-            <div className="flex items-center gap-4 text-xs">
-              <span className="text-zinc-400 hidden sm:inline">{user.name}</span>
+            <div className="flex items-center gap-3 text-xs">
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                {user.name}
+              </div>
               <button 
                 onClick={onLogout} 
-                className="text-zinc-400 hover:text-zinc-200 transition-colors"
+                className="btn-secondary !py-1.5 !px-3 text-xs"
               >
                 Sign out
               </button>
@@ -37,14 +42,14 @@ export default function AppShell({ children }) {
         </div>
       </header>
 
-      {/* Content */}
+      {/* Main Content */}
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      <footer className="border-t border-[#222226] px-6 py-6 mt-12 text-xs text-zinc-500">
+      <footer className="border-t border-purple-500/10 px-6 py-6 mt-14 text-xs text-slate-500">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <p>ClauseGuard — Document Analysis & Risk Assessment</p>
-          <p className="text-zinc-600">Indian Legal Framework Reference</p>
+          <p className="text-purple-400/60 font-medium">28 Indian Acts Reference</p>
         </div>
       </footer>
     </div>
