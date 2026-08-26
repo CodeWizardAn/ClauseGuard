@@ -172,6 +172,5 @@ ClauseGuard is an educational reading aid designed for awareness and understandi
 
 ---
 
-<div align="center">
-Built with ❤️ for everyday citizens navigating complex contracts.
-</div>
+
+
