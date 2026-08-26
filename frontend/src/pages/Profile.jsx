@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { User, Lock, KeyRound, Camera, CheckCircle2, AlertCircle, ArrowLeft, Trash2, Upload } from 'lucide-react'
+import { User, Lock, KeyRound, CheckCircle2, AlertCircle, ArrowLeft, Trash2, Upload } from 'lucide-react'
 import API from '../api'
 import AppShell from '../components/AppShell'
 import { useAuth } from '../auth'
@@ -149,22 +149,19 @@ export default function Profile() {
   return (
     <AppShell>
       <div className="max-w-2xl mx-auto px-6 py-10">
-        {/* Back Link */}
-        <button 
-          onClick={() => navigate('/dashboard')} 
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors mb-6"
-        >
-          <ArrowLeft size={13} /> Back to Dashboard
-        </button>
-
-        {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Account <span className="text-gradient-purple">Settings</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed">
-            Manage your personal profile, credentials, and encrypted vault security lock.
-          </p>
+        {/* Prominent Aligned Header with Back Button */}
+        <div className="flex items-center gap-4 mb-8 pb-6 border-b border-white/[0.08]">
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-purple-500/30 text-slate-300 hover:text-white flex items-center justify-center transition-all shrink-0"
+            title="Back to Dashboard"
+          >
+            <ArrowLeft size={18} />
+          </button>
+          <div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">Account Settings</h1>
+            <p className="text-xs text-slate-400 mt-0.5">Manage your personal profile, credentials, and vault security.</p>
+          </div>
         </div>
 
         {/* Vertical Options Stack */}
