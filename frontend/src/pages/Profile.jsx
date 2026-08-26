@@ -1,13 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { User, Shield, Lock, KeyRound, Camera, CheckCircle2, AlertCircle, ArrowLeft, Save, Sparkles, RefreshCw } from 'lucide-react'
+import { User, Lock, KeyRound, Camera, CheckCircle2, AlertCircle, ArrowLeft, Trash2, Upload } from 'lucide-react'
 import API from '../api'
 import AppShell from '../components/AppShell'
 import { useAuth } from '../auth'
-
-const PRESET_AVATARS = [
-  '⚡', '🛡️', '⚖️', '💼', '🚀', '🔮', '🦊', '🦅', '🎯', '💎'
-]
 
 export default function Profile() {
   const { user, saveSession } = useAuth()
@@ -18,7 +14,6 @@ export default function Profile() {
   const [name, setName] = useState('')
   const [age, setAge] = useState('')
   const [role, setRole] = useState('')
-  const [language, setLanguage] = useState('en')
   const [avatar, setAvatar] = useState('')
 
   // Password Change State
@@ -42,7 +37,6 @@ export default function Profile() {
       setName(user.name || '')
       setAge(user.age || '')
       setRole(user.role || 'Everyday Citizen')
-      setLanguage(user.language || 'en')
       setAvatar(user.avatar || '')
     }
   }, [user])
@@ -63,6 +57,11 @@ export default function Profile() {
     reader.readAsDataURL(file)
   }
 
+  const removeAvatar = () => {
+    setAvatar('')
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
   const saveProfileInfo = async (e) => {
     e.preventDefault()
     setBusy(true)
@@ -73,12 +72,11 @@ export default function Profile() {
         name: name.trim(),
         age: Number(age),
         role: role.trim(),
-        language,
         avatar,
       })
       const token = localStorage.getItem('cg-token') || sessionStorage.getItem('cg-token')
       saveSession(token, res.data.user)
-      setProfileMsg({ text: 'Profile details saved successfully!', type: 'success' })
+      setProfileMsg({ text: 'Profile details saved successfully.', type: 'success' })
     } catch (err) {
       setProfileMsg({ text: err.response?.data?.detail || 'Failed to update profile', type: 'error' })
     } finally {
@@ -105,7 +103,7 @@ export default function Profile() {
         current_password: currentPassword,
         new_password: newPassword,
       })
-      setPasswordMsg({ text: res.data.message || 'Password changed successfully!', type: 'success' })
+      setPasswordMsg({ text: res.data.message || 'Password changed successfully.', type: 'success' })
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
@@ -135,7 +133,7 @@ export default function Profile() {
         current_pin: currentPin,
         new_pin: newPin,
       })
-      setPinMsg({ text: res.data.message || 'Vault PIN changed successfully!', type: 'success' })
+      setPinMsg({ text: res.data.message || 'Vault PIN updated successfully.', type: 'success' })
       setCurrentPin('')
       setNewPin('')
       setConfirmPin('')
@@ -161,58 +159,62 @@ export default function Profile() {
 
         {/* Page Header */}
         <div className="mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-purple-300 text-xs font-semibold uppercase tracking-wider mb-3">
-            <User size={13} className="text-purple-400" /> Account & Security
-          </div>
-          <h1 className="text-3xl font-black text-white tracking-tight">
-            Profile & <span className="text-gradient-purple">Settings</span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            Account <span className="text-gradient-purple">Settings</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1.5 leading-relaxed">
-            Manage your personal profile, custom photo, account password, and 4-digit Document Vault security lock.
+          <p className="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed">
+            Manage your personal profile, credentials, and encrypted vault security lock.
           </p>
         </div>
 
-        {/* Vertical Stack: Options One Below The Other */}
+        {/* Vertical Options Stack */}
         <div className="space-y-6">
 
-          {/* Option 1: Personal Details & Avatar */}
-          <form onSubmit={saveProfileInfo} className="card p-6 border-purple-500/20 space-y-5">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <div>
-                <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                  <User size={16} className="text-purple-400" /> 1. Personal Information
-                </h2>
-                <p className="text-[11px] text-slate-400 mt-0.5">Manage your name, primary role, and profile photo.</p>
-              </div>
+          {/* Section 1: General Profile */}
+          <form onSubmit={saveProfileInfo} className="card p-6 border-white/10 space-y-5">
+            <div className="border-b border-white/10 pb-3">
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <User size={16} className="text-purple-400" /> General Profile
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">Your identity and role preferences across the platform.</p>
             </div>
 
-            {/* Avatar Section */}
-            <div className="flex items-center gap-4 py-2">
-              <div className="relative group">
-                {avatar && avatar.startsWith('data:image') ? (
-                  <img 
-                    src={avatar} 
-                    alt="Avatar" 
-                    className="w-16 h-16 rounded-2xl object-cover border-2 border-purple-500/50 shadow-lg shadow-purple-500/25" 
-                  />
-                ) : avatar ? (
-                  <div className="w-16 h-16 rounded-2xl bg-purple-600/20 border-2 border-purple-500/40 text-2xl flex items-center justify-center shadow-lg">
-                    {avatar}
-                  </div>
-                ) : (
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white text-2xl font-bold flex items-center justify-center shadow-lg shadow-purple-500/30">
-                    {userInitial}
-                  </div>
-                )}
+            {/* Clean Avatar Uploader */}
+            <div className="flex items-center gap-5 py-2">
+              {avatar && avatar.startsWith('data:image') ? (
+                <img 
+                  src={avatar} 
+                  alt="Profile" 
+                  className="w-16 h-16 rounded-2xl object-cover border border-purple-500/40 shadow-lg shadow-purple-500/15 shrink-0" 
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-700 text-white text-2xl font-bold flex items-center justify-center shadow-lg shrink-0">
+                  {userInitial}
+                </div>
+              )}
 
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center shadow-md transition-colors"
-                  title="Upload profile photo"
-                >
-                  <Camera size={13} />
-                </button>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="btn-secondary !py-1.5 !px-3 text-xs flex items-center gap-1.5"
+                  >
+                    <Upload size={13} />
+                    <span>Upload New Photo</span>
+                  </button>
+                  {avatar && (
+                    <button
+                      type="button"
+                      onClick={removeAvatar}
+                      className="px-3 py-1.5 rounded-xl text-xs text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors flex items-center gap-1"
+                    >
+                      <Trash2 size={13} />
+                      <span>Remove</span>
+                    </button>
+                  )}
+                </div>
+                <p className="text-[11px] text-slate-500">Supports JPG, PNG or WebP under 2 MB.</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -221,44 +223,9 @@ export default function Profile() {
                   onChange={handleAvatarUpload}
                 />
               </div>
-
-              <div className="space-y-1">
-                <p className="text-xs font-semibold text-white">Profile Photo</p>
-                <p className="text-[11px] text-slate-400">Upload a custom picture or choose a badge icon below.</p>
-              </div>
             </div>
 
-            {/* Preset Icon Selector */}
-            <div>
-              <span className="text-[11px] text-slate-400 block mb-1.5">Profile badge presets:</span>
-              <div className="flex flex-wrap gap-1.5">
-                {PRESET_AVATARS.map((emoji) => (
-                  <button
-                    key={emoji}
-                    type="button"
-                    onClick={() => setAvatar(emoji)}
-                    className={`w-8 h-8 rounded-lg text-sm flex items-center justify-center border transition-all ${
-                      avatar === emoji 
-                        ? 'bg-purple-500/25 border-purple-400 scale-110' 
-                        : 'bg-white/[0.03] border-white/10 hover:border-purple-500/30'
-                    }`}
-                  >
-                    {emoji}
-                  </button>
-                ))}
-                {avatar && (
-                  <button
-                    type="button"
-                    onClick={() => setAvatar('')}
-                    className="px-2 py-1 rounded-lg text-[11px] text-slate-400 hover:text-rose-300 bg-white/[0.02] border border-white/10"
-                  >
-                    Reset
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Full Name */}
+            {/* Name */}
             <div>
               <label className="text-xs font-semibold text-slate-300 mb-1.5 block">Full Name</label>
               <input
@@ -301,7 +268,7 @@ export default function Profile() {
               </div>
             </div>
 
-            {/* Read-Only Masked Phone & Email */}
+            {/* Read-Only Account Contact Info */}
             <div className="grid sm:grid-cols-2 gap-3 pt-1">
               <div>
                 <label className="text-xs font-semibold text-slate-400 mb-1.5 block">Registered Email</label>
@@ -323,7 +290,6 @@ export default function Profile() {
               </div>
             </div>
 
-            {/* Feedback Alert */}
             {profileMsg.text && (
               <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
                 profileMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-red-500/10 border-red-500/30 text-red-300'
@@ -336,21 +302,20 @@ export default function Profile() {
             <button
               type="submit"
               disabled={busy}
-              className="btn-primary w-full text-xs !py-2.5 flex items-center justify-center gap-2"
+              className="btn-primary text-xs !py-2.5 !px-5"
             >
-              <Save size={14} />
-              <span>{busy ? 'Saving changes…' : 'Save Profile Changes'}</span>
+              {busy ? 'Saving…' : 'Save Changes'}
             </button>
           </form>
 
-          {/* Option 2: Change Account Password */}
-          <form onSubmit={handlePasswordChange} className="card p-6 border-purple-500/20 space-y-4">
+          {/* Section 2: Password Security */}
+          <form onSubmit={handlePasswordChange} className="card p-6 border-white/10 space-y-4">
             <div className="border-b border-white/10 pb-3">
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <KeyRound size={16} className="text-purple-400" /> 2. Change Account Password
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <KeyRound size={16} className="text-purple-400" /> Password & Authentication
               </h2>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                Verify your current password to set a new login password.
+              <p className="text-xs text-slate-400 mt-0.5">
+                Update your login password. Current password is required for verification.
               </p>
             </div>
 
@@ -361,7 +326,7 @@ export default function Profile() {
                 value={currentPassword}
                 onChange={e => setCurrentPassword(e.target.value)}
                 className="input text-xs"
-                placeholder="Enter your current password"
+                placeholder="Enter current password"
                 required
               />
             </div>
@@ -374,7 +339,7 @@ export default function Profile() {
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
                   className="input text-xs"
-                  placeholder="Min 6 chars, 1 Capital (e.g. Pass123)"
+                  placeholder="Min 6 characters with 1 capital letter"
                   required
                 />
               </div>
@@ -404,20 +369,20 @@ export default function Profile() {
             <button
               type="submit"
               disabled={busy || !currentPassword || !newPassword}
-              className="btn-secondary w-full text-xs !py-2.5"
+              className="btn-secondary text-xs !py-2 !px-4"
             >
               Update Password
             </button>
           </form>
 
-          {/* Option 3: Change Vault 4-Digit PIN */}
-          <form onSubmit={handlePinChange} className="card p-6 border-purple-500/20 space-y-4">
+          {/* Section 3: Vault PIN */}
+          <form onSubmit={handlePinChange} className="card p-6 border-white/10 space-y-4">
             <div className="border-b border-white/10 pb-3">
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <Lock size={16} className="text-purple-400" /> 3. Change Vault 4-Digit PIN
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <Lock size={16} className="text-purple-400" /> Document Vault Security Lock
               </h2>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                Verify your current 4-digit PIN to update your document locker lock.
+              <p className="text-xs text-slate-400 mt-0.5">
+                The 4-digit PIN used to decrypt and access saved contract reports.
               </p>
             </div>
 
@@ -437,7 +402,7 @@ export default function Profile() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">New PIN</label>
+                <label className="text-xs font-semibold text-slate-300 mb-1 block">New 4-Digit PIN</label>
                 <input
                   type="password"
                   inputMode="numeric"
@@ -450,7 +415,7 @@ export default function Profile() {
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">Confirm PIN</label>
+                <label className="text-xs font-semibold text-slate-300 mb-1 block">Confirm New PIN</label>
                 <input
                   type="password"
                   inputMode="numeric"
@@ -476,7 +441,7 @@ export default function Profile() {
             <button
               type="submit"
               disabled={busy || currentPin.length !== 4 || newPin.length !== 4}
-              className="btn-secondary w-full text-xs !py-2.5"
+              className="btn-secondary text-xs !py-2 !px-4"
             >
               Update Vault PIN
             </button>
