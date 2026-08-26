@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Shield, BookOpen, GitCompare, FileText, Lock, CheckCircle2, ShieldCheck } from 'lucide-react'
+import { Shield, BookOpen, GitCompare, FileText, Lock, CheckCircle2, ShieldCheck, LogOut } from 'lucide-react'
 import { useAuth } from '../auth'
 
 export default function AppShell({ children }) {
@@ -11,13 +11,16 @@ export default function AppShell({ children }) {
     navigate('/')
   }
 
+  const initial = user?.name ? user.name.trim().charAt(0).toUpperCase() : 'U'
+
   return (
     <div className="min-h-screen app-bg flex flex-col">
       {/* Top Navigation */}
-      <header className="border-b border-purple-500/15 bg-[#0b0e1e]/80 backdrop-blur-xl px-6 py-4 sticky top-0 z-40">
+      <header className="border-b border-purple-500/15 bg-[#0b0e1e]/85 backdrop-blur-xl px-6 py-3.5 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link to="/dashboard" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#4f46e5] text-white flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-transform">
+          {/* Logo */}
+          <Link to="/dashboard" className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#4f46e5] border border-purple-400/30 text-white flex items-center justify-center shadow-lg shadow-purple-500/25 group-hover:scale-105 transition-transform duration-200">
               <Shield size={16} className="stroke-[2.5]" />
             </div>
             <span className="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
@@ -25,22 +28,33 @@ export default function AppShell({ children }) {
             </span>
           </Link>
 
+          {/* User Profile & Action */}
           {user && (
-            <div className="flex items-center gap-3 text-xs">
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-                {user.name}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5 pl-2.5 pr-1.5 py-1.5 rounded-xl bg-white/[0.04] border border-purple-500/20 shadow-sm backdrop-blur-sm">
+                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 text-white font-bold text-[11px] flex items-center justify-center shadow-inner">
+                  {initial}
+                </div>
+                <span className="text-xs font-semibold text-slate-200 hidden sm:inline max-w-[120px] truncate">
+                  {user.name}
+                </span>
+                
+                <div className="w-px h-3.5 bg-white/10 mx-1 hidden sm:block" />
+
+                <button 
+                  onClick={onLogout} 
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-red-300 hover:bg-red-500/10 transition-all duration-150"
+                  title="Sign out of ClauseGuard"
+                >
+                  <LogOut size={13} />
+                  <span>Sign out</span>
+                </button>
               </div>
-              <button 
-                onClick={onLogout} 
-                className="btn-secondary !py-1.5 !px-3 text-xs"
-              >
-                Sign out
-              </button>
             </div>
           )}
         </div>
       </header>
+
 
       {/* Main Content */}
       <main className="flex-1">{children}</main>
