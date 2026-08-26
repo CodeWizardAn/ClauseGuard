@@ -7,7 +7,9 @@ import ChatDrawer from '../components/ChatDrawer'
 import AppShell from '../components/AppShell'
 import InsightsPanel from '../components/InsightsPanel'
 import PersonalizedVerdict from '../components/PersonalizedVerdict'
+import OmissionRadar from '../components/OmissionRadar'
 import { LANGUAGES, getSavedLang, saveLang, API_BASE } from '../languages'
+
 
 function scoreTone(score) {
   if (score >= 70) return 'text-red-400'
@@ -132,7 +134,11 @@ export default function Analysis() {
         {/* AI Insights Panel — shown after analysis completes */}
         {!isAnalyzing && <InsightsPanel contractId={contractId} />}
 
+        {/* What's Missing? Omission Radar — shown after analysis completes */}
+        {!isAnalyzing && <OmissionRadar contractId={contractId} />}
+
         <div className="space-y-5">
+
           <AnimatePresence>
             {clauses.map(clause => (
               <motion.article

@@ -28,6 +28,7 @@ from privacy import redact_pii, public_filename, privacy_metadata
 from languages import SUPPORTED_LANGUAGES
 from insights import generate_insights
 from smart_context import generate_smart_questions, generate_personalized_verdict
+from omissions import detect_missing_clauses
 from users import (
     get_current_user,
     register_user,
@@ -402,6 +403,39 @@ def get_insights(contract_id: str, current_user: dict = Depends(get_current_user
         raise HTTPException(status_code=404, detail="No clauses found for this contract")
     insights = generate_insights(clauses, contract.get("contract_type", "Unknown"))
     return insights
+
+
+@app.get("/omissions/{contract_id}")
+def get_omissions(contract_id: str, current_user: dict = Depends(get_current_user)):
+    contract = get_contract(contract_id)
+    if not contract:
+        raise HTTPException(status_code=404, detail="Contract not found")
+    
+    # Check if already cached in contract profile extra
+    prof = get_profile(contract_id) or {}
+    extra = prof.get("extra") or {}
+    cached_omissions = extra.get("omissions")
+    if cached_omissions:
+        return cached_omissions
+
+    contract_text = read_document(contract_id)
+    clauses = get_clauses(contract_id)
+    contract_type = contract.get("contract_type", "Rental Agreement")
+
+    result = detect_missing_clauses(contract_text, clauses, contract_type)
+    
+    # Save to profile extra cache
+    extra["omissions"] = result
+    save_profile(
+        contract_id,
+        prof.get("role") or current_user.get("role") or "everyday person",
+        prof.get("worry") or current_user.get("worry") or "hidden risks",
+        prof.get("language") or current_user.get("language") or "en",
+        prof.get("question") or "Omission analysis",
+        extra=extra
+    )
+    return result
+
 
 
 @app.get("/smart-questions/{contract_id}")
