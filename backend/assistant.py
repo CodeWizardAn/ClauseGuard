@@ -9,8 +9,8 @@ Provides comprehensive guidance on:
 import os
 from typing import List, Dict
 import google.generativeai as genai
-from glossary import GLOSSARY_DB
-from indian_law import STATUTORY_BENCHMARKS
+from glossary import GLOSSARY
+from indian_law import INDIAN_LAW_DB
 
 # Configure Gemini API if available
 GEMINI_KEY = os.getenv("GEMINI_API_KEY")
@@ -75,15 +75,16 @@ def generate_assistant_response(query: str, chat_history: List[Dict] = None) -> 
     q_lower = query_clean.lower()
     
     # Check Glossary matches
-    for term, data in GLOSSARY_DB.items():
+    for term, data in GLOSSARY.items():
         if term in q_lower or data.get("term", "").lower() in q_lower:
-            context_snippets.append(f"Glossary [{data.get('term')}]: {data.get('definition')} Example: {data.get('example')}")
+            context_snippets.append(f"Glossary [{data.get('term')}]: {data.get('definition')} Example: {data.get('analogy', '')}")
 
     # Check Statutory benchmarks
-    for statute in STATUTORY_BENCHMARKS:
+    for statute in INDIAN_LAW_DB:
         kw_matches = [kw for kw in statute.get("keywords", []) if kw in q_lower]
-        if kw_matches or statute.get("category", "").lower() in q_lower:
-            context_snippets.append(f"Legal Benchmark ({statute.get('category')} - {statute.get('act')}): {statute.get('plain_summary')} Rule: {statute.get('statutory_rule')}")
+        if kw_matches or statute.get("concept", "").lower() in q_lower or statute.get("act", "").lower() in q_lower:
+            context_snippets.append(f"Legal Benchmark ({statute.get('act')} - {statute.get('section')}): {statute.get('concept')} - {statute.get('text')}")
+
 
     context_str = "\n".join(context_snippets[:3]) if context_snippets else "No specific statute match; apply general plain-language contract principles."
 
