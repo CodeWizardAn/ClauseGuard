@@ -4,6 +4,7 @@ import { Shield } from 'lucide-react'
 import API from '../api'
 import { useAuth } from '../auth'
 import ClauseGuardLogo from '../components/ClauseGuardLogo'
+import authBg from '../assets/auth_bg.jpg'
 
 const EMAIL_OK = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/
 
@@ -38,26 +39,37 @@ export default function Auth() {
 
   const submit = async (e) => {
     e.preventDefault()
-    const msg = validate()
-    if (msg) { setError(msg); return }
+    const valErr = validate()
+    if (valErr) {
+      setError(valErr)
+      return
+    }
     setBusy(true)
     setError('')
     try {
       if (isLogin) {
-        const res = await API.post('/auth/login', { email: form.email, password: form.password })
-        saveSession(res.data.access_token, res.data.user)
-        navigate(res.data.user.profile_complete ? '/dashboard' : '/setup')
-      } else {
-        const res = await API.post('/auth/register', {
-          name: form.name.trim(),
-          age: Number(form.age),
-          phone: form.phone,
-          email: form.email,
+        const { data } = await API.post('/auth/login', {
+          email: form.email.trim(),
           password: form.password,
         })
-        saveSession(res.data.access_token, res.data.user)
+        saveSession(data.access_token || data.token, data.user)
+        if (data.user?.profile_complete) {
+          navigate('/dashboard')
+        } else {
+          navigate('/setup')
+        }
+      } else {
+        const { data } = await API.post('/auth/register', {
+          name: form.name.trim(),
+          age: Number(form.age),
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          password: form.password,
+        })
+        saveSession(data.access_token || data.token, data.user)
         navigate('/setup')
       }
+
     } catch (err) {
       setError(err.response?.data?.detail || 'Something went wrong. Please try again.')
     } finally {
@@ -66,30 +78,48 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen app-bg flex flex-col justify-between selection:bg-purple-500/30 selection:text-white">
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
+    <div className="min-h-screen bg-[#050716] relative flex flex-col justify-between selection:bg-purple-500/30 selection:text-white overflow-hidden">
+      {/* High-Fidelity Cyber Security Lock Artwork Background */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <img 
+          src={authBg} 
+          alt="ClauseGuard Security Architecture" 
+          className="w-full h-full object-cover object-center opacity-[0.45] filter saturate-110 brightness-90 blur-[0.5px] scale-105"
+        />
+        {/* Soft Radial Ambient Lighting to keep center card crisp and high-contrast */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050716] via-[#050716]/45 to-[#050716]/85" />
+        <div className="absolute inset-0 bg-radial from-transparent via-[#050716]/35 to-[#050716]/90" />
+      </div>
+
+      {/* Top Header Bar with Top-Left Brand Logo & Name */}
+      <header className="relative z-20 px-8 sm:px-12 py-6 flex items-center justify-start">
+        <div className="flex items-center gap-3.5 group cursor-pointer">
+          <ClauseGuardLogo 
+            size={46} 
+            className="group-hover:scale-105 transition-transform duration-200 drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]" 
+          />
+          <span className="font-extrabold text-2xl sm:text-3xl tracking-tight text-white drop-shadow-md">
+            Clause<span className="text-purple-400">Guard</span>
+          </span>
+        </div>
+      </header>
+
+
+      {/* Center Authentication Card */}
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-8 relative z-10">
         <div className="w-full max-w-md">
-          {/* Header */}
-          <div className="flex flex-col items-center mb-8">
-            <div className="relative mb-4 group cursor-pointer">
-              <div className="absolute -inset-5 rounded-full bg-gradient-to-r from-purple-600/35 via-indigo-500/25 to-pink-500/30 blur-2xl opacity-75 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              <ClauseGuardLogo 
-                size={110} 
-                className="relative z-10 hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_35px_rgba(168,85,247,0.5)]" 
-              />
+
+          {/* Form Card with Frosted Obsidian Finish */}
+          <form onSubmit={submit} className="rounded-3xl bg-[#090d24]/90 backdrop-blur-2xl p-7 sm:p-8 space-y-4 border border-white/20 shadow-2xl shadow-black/90">
+            <div className="mb-2">
+              <h2 className="text-2xl font-black text-white tracking-tight">
+                {isLogin ? 'Sign In' : 'Create Account'}
+              </h2>
+              <p className="text-slate-400 text-xs mt-1">
+                {isLogin ? 'Enter your credentials to access your analyses.' : 'Set up your secure profile to analyze contracts.'}
+              </p>
             </div>
-            <h1 className="text-3xl font-black text-white tracking-tight text-center">
-              Clause<span className="text-gradient-purple">Guard</span>
-            </h1>
-            <p className="text-slate-400 text-sm mt-2 text-center max-w-sm leading-relaxed">
-              {isLogin ? 'Sign in to access your contract analyses.' : 'Create your account. Zero-knowledge PII protection.'}
-            </p>
-          </div>
 
-
-
-          {/* Form */}
-          <form onSubmit={submit} className="card p-7 sm:p-8 space-y-4 border-purple-500/20">
             {!isLogin && (
               <>
                 <div>
