@@ -100,40 +100,44 @@ def query_contract(contract_id: str, query: str, top_k: int = 4, lang: str = "en
     history = get_chat_history(contract_id, limit=8)
     hist_txt = "\n".join(f"{h['role']}: {h['content']}" for h in history)
 
-    prompt = f"""You are a friendly explainer, not a lawyer.
-Talk like a helpful classmate. Use short sentences and everyday words.
-If you must use a legal word, explain it in brackets right after.
+    from indian_law import get_relevant_law
+    statutory_context = get_relevant_law(query + " " + context[:400], top_k=2)
+
+    prompt = f"""You are a precise, plain-language legal intelligence assistant.
+Talk like a clear expert explaining to a normal citizen. Use plain words and short sentences.
 Never reveal names, phone numbers, emails, or ID numbers. Say "you" and "the other side".
-Answer ONLY from the document parts below. If it is not there, say you cannot see it in this paper.
+Ground your answer STRICTLY in the provided document parts and statutory context. Do NOT guess or make up facts.
 
 Reader role: {profile.get('role') or 'everyday person'}
 They worry about: {profile.get('worry') or 'hidden risks'}
-Their original question after upload: {profile.get('question') or 'what should I watch out for'}
+
+{statutory_context}
+
+DOCUMENT EXCERPTS:
+{context}
 
 Recent chat:
 {hist_txt or '(none)'}
 
-DOCUMENT PARTS:
-{context}
-
 QUESTION: {query}
 
-Write:
-1) A 1-sentence answer.
-2) Then 2-4 very short bullet-like lines starting with "- ".
-3) End with one line: "What to do: ..."
-Keep the whole answer under 90 words.
+Instructions:
+1. Give a clear, direct 1-sentence answer addressing the question immediately.
+2. Provide 2-3 short, actionable bullet points explaining what this means and any risk.
+3. End with a single concrete action: "What to do: [specific next step or counter-clause suggestion]".
+Keep response concise, authoritative, and under 120 words.
 """
 
     try:
         response = groq_client.chat.completions.create(
             model=FAST_MODEL,
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
+            temperature=0.15,
         )
         answer = response.choices[0].message.content.strip()
     except Exception as e:
         answer = f"I could not answer just now. Try a simpler question. ({e})"
+
 
     return {
         "answer": answer,

@@ -100,6 +100,7 @@ CATEGORY_BENCHMARKS = {
         }
     ],
     "Vendor / Service Agreement": [
+
         {
             "name": "MSMED Statutory 45-Day Payment Window & Interest",
             "statute": "Micro, Small and Medium Enterprises Development (MSMED) Act 2006, Section 15 & 16",
@@ -118,8 +119,43 @@ CATEGORY_BENCHMARKS = {
             "why": "Guarantees client cannot take finished deliverables and refuse payment while claiming complete copyright ownership.",
             "clause": "Title and copyright to all deliverables and custom works shall transfer to the Client only upon receipt of 100% full and final payment of all corresponding invoices."
         }
+    ],
+    "Terms of Service": [
+        {
+            "name": "Mandatory Prior Notice for Material Terms Changes",
+            "statute": "Consumer Protection Act 2019, Section 2(46)",
+            "why": "Prevents platforms from unilaterally changing pricing, usage limits, or liability rules without giving users a 30-day notice window to opt out.",
+            "clause": "The Service Provider shall provide at least 30 (thirty) days prior written or electronic notice before implementing any material changes to terms, fees, or data policies, during which the User may terminate without penalty."
+        },
+        {
+            "name": "Data Deletion & Export Right on Account Termination",
+            "statute": "Digital Personal Data Protection (DPDP) Act 2023, Section 12",
+            "why": "Guarantees that your confidential data, documents, and personal identity are permanently purged upon closing your account.",
+            "clause": "Upon termination of account or service, the Provider shall permanently delete all User Personal Data from primary and backup systems within 30 days and provide an option for full data export."
+        },
+        {
+            "name": "Prohibition of Unilateral Discretion in Dispute Resolution",
+            "statute": "Indian Contract Act 1872, Section 28",
+            "why": "Stops platforms from forcing users into remote foreign arbitration seats that make disputing unauthorized charges practically impossible.",
+            "clause": "Disputes shall be resolved under Indian law within the jurisdiction of the User's resident city or mutually agreed online dispute resolution (ODR) mechanism."
+        }
+    ],
+    "Commercial Agreement": [
+        {
+            "name": "Mutual Confidentiality & NDA Symmetry",
+            "statute": "Indian Contract Act 1872, Section 27",
+            "why": "Ensures that confidentiality obligations are two-way, protecting your proprietary trade secrets just as strictly as the other party's.",
+            "clause": "Both parties agree to hold each other's proprietary information in strict confidence with equal duty of care for a period not exceeding 3 (three) years from disclosure."
+        },
+        {
+            "name": "Defined Cure Period for Technical Breaches",
+            "statute": "Specific Relief Act 1963, Section 10",
+            "why": "Prevents immediate contract cancellation for minor delays without giving you 30 days to rectify the issue.",
+            "clause": "Neither party may terminate for breach without first providing written notice specifying the default and allowing a 30 (thirty) day cure period to remedy the breach."
+        }
     ]
 }
+
 
 
 def _build_omission_prompt(text: str, contract_type: str, benchmarks: list[dict]) -> str:
