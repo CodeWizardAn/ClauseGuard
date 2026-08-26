@@ -215,3 +215,12 @@ def detect_glossary_terms(text: str) -> list:
             found.append(data)
             
     return found
+
+# Alias for backwards compatibility
+extract_jargon = detect_glossary_terms
+
+def get_all_glossary_terms() -> list:
+    """Return all glossary terms as a list of dicts."""
+    return list(GLOSSARY.values())
+
+

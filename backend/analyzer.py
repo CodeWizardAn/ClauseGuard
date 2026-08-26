@@ -1,6 +1,7 @@
 import re
 import os
 import json
+import time
 from groq import Groq
 from dotenv import load_dotenv
 from indian_law import get_relevant_law
@@ -19,6 +20,7 @@ try:
         client = Groq(api_key=api_key)
 except Exception:
     client = None
+
 
 
 def extract_contract_metadata(text: str, contract_type: str) -> dict:
@@ -129,23 +131,37 @@ Return ONLY valid JSON matching this schema:
 
     result = None
     if client:
-        try:
-            response = client.chat.completions.create(
-                model=REASONING_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.1,
-                max_tokens=650,
-            )
-            raw = response.choices[0].message.content.strip()
-            if raw.startswith("```"):
-                raw = re.sub(r"```json|```", "", raw).strip()
-            result = json.loads(raw)
-            try:
-                result = validate_response(json.dumps(result))
-            except Exception:
-                pass
-        except Exception as e:
-            print(f"[analyzer] LLM analysis error: {e}")
+        # Multi-model resilience pool for high-throughput Groq execution
+        candidate_models = [REASONING_MODEL, "llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
+        for model_name in candidate_models:
+            for attempt in range(2):
+                try:
+                    response = client.chat.completions.create(
+                        model=model_name,
+                        messages=[{"role": "user", "content": prompt}],
+                        temperature=0.1,
+                        max_tokens=650,
+                    )
+                    raw = response.choices[0].message.content.strip()
+                    if raw.startswith("```"):
+                        raw = re.sub(r"```json|```", "", raw).strip()
+                    result = json.loads(raw)
+                    try:
+                        result = validate_response(json.dumps(result))
+                    except Exception:
+                        pass
+                    break  # Success, exit retry loop
+                except Exception as e:
+                    err_msg = str(e)
+                    if "429" in err_msg or "rate_limit" in err_msg:
+                        print(f"[analyzer] Rate limit hit on {model_name}. Waiting 2s before retry/fallback...")
+                        time.sleep(2)
+                    else:
+                        print(f"[analyzer] LLM error on {model_name}: {e}")
+                        break
+            if result and isinstance(result, dict) and "risk_score" in result:
+                break  # Successfully parsed result
+
 
     if not result or not isinstance(result, dict) or "risk_score" not in result:
         # Intelligent Rule-Based Fallback Scoring
