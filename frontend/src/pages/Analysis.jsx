@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { AlertCircle, Check, Languages, ChevronDown } from 'lucide-react'
+import { AlertCircle, Check, Languages, ChevronDown, Filter } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import API from '../api'
 import ChatDrawer from '../components/ChatDrawer'
@@ -8,6 +8,7 @@ import AppShell from '../components/AppShell'
 import InsightsPanel from '../components/InsightsPanel'
 import PersonalizedVerdict from '../components/PersonalizedVerdict'
 import OmissionRadar from '../components/OmissionRadar'
+import RiskDistributionChart from '../components/RiskDistributionChart'
 import { LANGUAGES, getSavedLang, saveLang, API_BASE } from '../languages'
 
 
@@ -38,7 +39,18 @@ export default function Analysis() {
   const [langOpen, setLangOpen] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [profile, setProfile] = useState(null)
+  const [selectedSeverity, setSelectedSeverity] = useState(null)
   const overall = contract?.overall_score ?? (clauses.length ? Math.round(clauses.reduce((s, c) => s + (c.risk_score || 0), 0) / clauses.length) : null)
+
+  // Filter clauses based on user-selected risk tier from chart
+  const filteredClauses = clauses.filter(c => {
+    if (!selectedSeverity) return true
+    if (selectedSeverity === 'red') return c.severity === 'Critical' || (c.risk_score >= 70)
+    if (selectedSeverity === 'orange') return (c.severity === 'High' && c.risk_score < 70) || (c.risk_score >= 50 && c.risk_score < 70)
+    if (selectedSeverity === 'yellow') return (c.severity === 'Medium' && c.risk_score < 50) || (c.risk_score >= 30 && c.risk_score < 50)
+    if (selectedSeverity === 'green') return c.severity === 'Clean' || c.severity === 'Low' || (c.risk_score < 30)
+    return true
+  })
 
   useEffect(() => {
     API.get(`/profile/${contractId}`).then(res => setProfile(res.data)).catch(() => {})
@@ -131,16 +143,41 @@ export default function Analysis() {
         </div>
 
 
+        {/* Interactive Risk Distribution Pie/Donut Chart */}
+        {clauses.length > 0 && (
+          <RiskDistributionChart
+            clauses={clauses}
+            onFilterSeverity={setSelectedSeverity}
+            selectedSeverity={selectedSeverity}
+          />
+        )}
+
         {/* AI Insights Panel — shown after analysis completes */}
         {!isAnalyzing && <InsightsPanel contractId={contractId} />}
 
         {/* What's Missing? Omission Radar — shown after analysis completes */}
         {!isAnalyzing && <OmissionRadar contractId={contractId} />}
 
-        <div className="space-y-5">
+        {/* Filter Indicator Badge if active */}
+        {selectedSeverity && (
+          <div className="flex items-center justify-between p-3 rounded-2xl bg-purple-500/10 border border-purple-500/25 mb-4 text-xs">
+            <span className="text-purple-300 font-semibold flex items-center gap-2">
+              <Filter size={13} />
+              Filtering by: <span className="uppercase font-bold text-white">{selectedSeverity}</span> ({filteredClauses.length} of {clauses.length} parts)
+            </span>
+            <button
+              onClick={() => setSelectedSeverity(null)}
+              className="text-purple-300 hover:text-white underline cursor-pointer font-bold"
+            >
+              Reset Filter
+            </button>
+          </div>
+        )}
 
+        <div className="space-y-5">
           <AnimatePresence>
-            {clauses.map(clause => (
+            {filteredClauses.map(clause => (
+
               <motion.article
                 key={clause.clause_number}
                 initial={{ opacity: 0, y: 12 }}

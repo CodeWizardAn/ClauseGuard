@@ -3,12 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { AlertCircle } from 'lucide-react'
 import API from '../api'
 import AppShell from '../components/AppShell'
+import RiskDistributionChart from '../components/RiskDistributionChart'
 
 export default function Report() {
   const { contractId } = useParams()
   const navigate = useNavigate()
   const [data, setData] = useState(null)
   const [error, setError] = useState('')
+  const [selectedSeverity, setSelectedSeverity] = useState(null)
 
   useEffect(() => {
     API.get(`/report/${contractId}`)
@@ -63,8 +65,18 @@ export default function Report() {
           </div>
         )}
 
+        {/* Interactive Risk Breakdown Spectrum */}
+        {data.results && data.results.length > 0 && (
+          <RiskDistributionChart
+            clauses={data.results}
+            onFilterSeverity={setSelectedSeverity}
+            selectedSeverity={selectedSeverity}
+          />
+        )}
+
         <div className="card p-6 mb-6">
           <h2 className="font-medium text-[#f4f1ea] mb-4">Watch these parts</h2>
+
           {risky.length === 0 ? (
             <p className="text-sm text-stone-400">Nothing marked as high risk. Still read before you sign.</p>
           ) : (
