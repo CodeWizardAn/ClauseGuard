@@ -3,8 +3,10 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { FileText, Lock, LogOut, Calculator, Settings, ChevronDown, User } from 'lucide-react'
 import { useAuth } from '../auth'
 import ClauseGuardLogo from './ClauseGuardLogo'
+import SiteAssistant from './SiteAssistant'
 
 export default function AppShell({ children }) {
+
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
@@ -239,6 +241,10 @@ export default function AppShell({ children }) {
           </div>
         </div>
       </footer>
+
+      {/* Global Site-Wide AI Assistant & Legal Jargon Copilot */}
+      <SiteAssistant />
     </div>
   )
 }
+

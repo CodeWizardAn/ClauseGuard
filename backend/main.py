@@ -39,9 +39,11 @@ from users import (
     change_password,
     change_vault_pin,
 )
+from assistant import generate_assistant_response
 
 
 app = FastAPI(title="ClauseGuard API")
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -648,4 +650,16 @@ def auth_change_password(body: ChangePasswordBody, current_user: dict = Depends(
 @app.post("/auth/change-pin")
 def auth_change_pin(body: ChangePinBody, current_user: dict = Depends(get_current_user)):
     return change_vault_pin(current_user["user_id"], body.current_pin, body.new_pin)
+
+
+class AssistantChatBody(BaseModel):
+    query: str
+    chat_history: Optional[list] = None
+
+
+@app.post("/assistant/chat")
+def assistant_chat_endpoint(body: AssistantChatBody):
+    reply = generate_assistant_response(body.query, body.chat_history)
+    return {"reply": reply}
+
 
