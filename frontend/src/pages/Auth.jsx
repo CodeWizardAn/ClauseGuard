@@ -22,9 +22,10 @@ export default function Auth() {
 
   const validate = () => {
     if (!EMAIL_OK.test(form.email.trim())) return 'Enter a valid email, like name@gmail.com'
-    if (!form.password || form.password.length < 6) return 'Password must be at least 6 characters'
-    if (!/^[A-Z]/.test(form.password)) return 'Password must start with a capital letter'
+    if (!form.password || form.password.trim().length === 0) return 'Please enter your password'
     if (!isLogin) {
+      if (form.password.length < 6) return 'Password must be at least 6 characters'
+      if (!/^[A-Z]/.test(form.password)) return 'Password must start with a capital letter'
       if (form.name.trim().length < 2) return 'Please enter your name'
       const age = Number(form.age)
       if (!age || age < 13 || age > 120) return 'Enter a valid age (13 or older)'
@@ -33,6 +34,7 @@ export default function Auth() {
     }
     return ''
   }
+
 
   const submit = async (e) => {
     e.preventDefault()
