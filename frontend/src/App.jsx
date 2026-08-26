@@ -14,6 +14,8 @@ import Glossary from './pages/Glossary'
 import Comparison from './pages/Comparison'
 import Personalize from './pages/Personalize'
 import SmartContext from './pages/SmartContext'
+import AffordabilityCalculator from './pages/AffordabilityCalculator'
+import Profile from './pages/Profile'
 
 const pageVariants = {
   initial: {
@@ -66,6 +68,8 @@ function AnimatedRoutes() {
         <Route path="/setup" element={<ProtectedRoute><PageWrapper><Setup /></PageWrapper></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute needSetup><PageWrapper><Dashboard /></PageWrapper></ProtectedRoute>} />
         <Route path="/analyze" element={<ProtectedRoute needSetup><PageWrapper><Analyze /></PageWrapper></ProtectedRoute>} />
+        <Route path="/calculator" element={<ProtectedRoute needSetup><PageWrapper><AffordabilityCalculator /></PageWrapper></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute needSetup><PageWrapper><Profile /></PageWrapper></ProtectedRoute>} />
         <Route path="/vault" element={<ProtectedRoute needSetup><PageWrapper><Vault /></PageWrapper></ProtectedRoute>} />
         <Route path="/smart-context/:contractId" element={<ProtectedRoute needSetup><PageWrapper><SmartContext /></PageWrapper></ProtectedRoute>} />
         <Route path="/personalize/:contractId" element={<ProtectedRoute needSetup><PageWrapper><Personalize /></PageWrapper></ProtectedRoute>} />
@@ -77,6 +81,7 @@ function AnimatedRoutes() {
     </AnimatePresence>
   )
 }
+
 
 export default function App() {
   return (

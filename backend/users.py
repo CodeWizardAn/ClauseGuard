@@ -98,6 +98,7 @@ def public_user(row: dict) -> dict:
         "role": row.get("role") or "",
         "worry": row.get("worry") or "",
         "language": row.get("language") or "en",
+        "avatar": row.get("avatar") or "",
         "personal_knowledge": pk,
     }
 
@@ -179,6 +180,53 @@ def complete_setup(user_id: str, role: str, worry: str, language: str, pin: str)
     return public_user(get_user_by_id(user_id))
 
 
+def update_profile(user_id: str, name: str = None, age: int = None, role: str = None, worry: str = None, language: str = None, avatar: str = None) -> dict:
+    fields = {}
+    if name is not None and len(name.strip()) >= 2:
+        fields["name"] = name.strip()
+    if age is not None:
+        try:
+            a = int(age)
+            if 13 <= a <= 120:
+                fields["age"] = a
+        except Exception:
+            pass
+    if role is not None:
+        fields["role"] = role.strip()
+    if worry is not None:
+        fields["worry"] = worry.strip()
+    if language is not None:
+        fields["language"] = language.strip()
+    if avatar is not None:
+        fields["avatar"] = avatar
+
+    if fields:
+        update_user(user_id, **fields)
+    return public_user(get_user_by_id(user_id))
+
+
+def change_password(user_id: str, current_password: str, new_password: str) -> dict:
+    row = get_user_by_id(user_id)
+    if not row or not row.get("password_hash"):
+        raise HTTPException(status_code=400, detail="Account error. Please re-login.")
+    if not check_secret(current_password, row["password_hash"]):
+        raise HTTPException(status_code=400, detail="Current password does not match.")
+    new_password = validate_password(new_password)
+    update_user(user_id, password_hash=hash_secret(new_password))
+    return {"status": "ok", "message": "Password updated successfully"}
+
+
+def change_vault_pin(user_id: str, current_pin: str, new_pin: str) -> dict:
+    row = get_user_by_id(user_id)
+    if not row or not row.get("vault_pin_hash"):
+        raise HTTPException(status_code=400, detail="Vault PIN not found. Please set it up in settings.")
+    if not check_secret(current_pin, row["vault_pin_hash"]):
+        raise HTTPException(status_code=400, detail="Current 4-digit PIN is incorrect.")
+    new_pin = validate_pin(new_pin)
+    update_user(user_id, vault_pin_hash=hash_secret(new_pin))
+    return {"status": "ok", "message": "Vault PIN updated successfully"}
+
+
 def verify_vault_pin(user_id: str, pin: str) -> bool:
     row = get_user_by_id(user_id)
     if not row or not row.get("vault_pin_hash"):
@@ -186,3 +234,4 @@ def verify_vault_pin(user_id: str, pin: str) -> bool:
     if not check_secret(pin, row["vault_pin_hash"]):
         raise HTTPException(status_code=401, detail="Incorrect PIN")
     return True
+

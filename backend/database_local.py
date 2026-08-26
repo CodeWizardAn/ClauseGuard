@@ -107,11 +107,13 @@ def init_db():
     _add_column(c, "contracts", "privacy_mode", "TEXT DEFAULT 'strict'")
     _add_column(c, "clauses", "simple_takeaway", "TEXT")
     _add_column(c, "users", "personal_knowledge", "TEXT DEFAULT '{}'")
+    _add_column(c, "users", "avatar", "TEXT")
     conn.commit()
     conn.close()
 
 
 init_db()
+
 
 
 
@@ -358,9 +360,10 @@ def get_user_by_email_hash(email_hash: str):
 def update_user(user_id: str, **fields):
     allowed = {
         "name", "age", "vault_pin_hash", "profile_complete", "role", "worry", "language",
-        "password_hash", "personal_knowledge",
+        "password_hash", "personal_knowledge", "avatar",
     }
     parts, values = [], []
+
     for k, v in fields.items():
         if k in allowed:
             parts.append(f"{k} = ?")

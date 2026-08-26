@@ -35,7 +35,11 @@ from users import (
     login_user,
     complete_setup,
     verify_vault_pin,
+    update_profile,
+    change_password,
+    change_vault_pin,
 )
+
 
 app = FastAPI(title="ClauseGuard API")
 
@@ -601,3 +605,47 @@ def auth_setup(body: SetupBody, current_user: dict = Depends(get_current_user)):
 def vault_unlock(body: PinBody, current_user: dict = Depends(get_current_user)):
     verify_vault_pin(current_user["user_id"], body.pin)
     return {"ok": True}
+
+
+class UpdateProfileBody(BaseModel):
+    name: Optional[str] = None
+    age: Optional[int] = None
+    role: Optional[str] = None
+    worry: Optional[str] = None
+    language: Optional[str] = None
+    avatar: Optional[str] = None
+
+
+class ChangePasswordBody(BaseModel):
+    current_password: str
+    new_password: str
+
+
+class ChangePinBody(BaseModel):
+    current_pin: str
+    new_pin: str
+
+
+@app.put("/auth/profile")
+def auth_update_profile(body: UpdateProfileBody, current_user: dict = Depends(get_current_user)):
+    user = update_profile(
+        current_user["user_id"],
+        name=body.name,
+        age=body.age,
+        role=body.role,
+        worry=body.worry,
+        language=body.language,
+        avatar=body.avatar,
+    )
+    return {"success": True, "user": user}
+
+
+@app.post("/auth/change-password")
+def auth_change_password(body: ChangePasswordBody, current_user: dict = Depends(get_current_user)):
+    return change_password(current_user["user_id"], body.current_password, body.new_password)
+
+
+@app.post("/auth/change-pin")
+def auth_change_pin(body: ChangePinBody, current_user: dict = Depends(get_current_user)):
+    return change_vault_pin(current_user["user_id"], body.current_pin, body.new_pin)
+

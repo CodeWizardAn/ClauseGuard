@@ -31,25 +31,37 @@ export default function AppShell({ children }) {
           {/* User Profile & Action */}
           {user && (
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2.5 pl-2.5 pr-1.5 py-1.5 rounded-xl bg-white/[0.04] border border-purple-500/20 shadow-sm backdrop-blur-sm">
-                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 text-white font-bold text-[11px] flex items-center justify-center shadow-inner">
-                  {initial}
-                </div>
-                <span className="text-xs font-semibold text-slate-200 hidden sm:inline max-w-[120px] truncate">
+              <Link 
+                to="/profile" 
+                className="flex items-center gap-2.5 pl-2.5 pr-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-purple-500/10 border border-purple-500/20 hover:border-purple-500/40 shadow-sm backdrop-blur-sm transition-all group"
+                title="View Profile & Security Settings"
+              >
+                {user.avatar && user.avatar.startsWith('data:image') ? (
+                  <img 
+                    src={user.avatar} 
+                    alt="User" 
+                    className="w-6 h-6 rounded-lg object-cover border border-purple-400/40" 
+                  />
+                ) : user.avatar ? (
+                  <span className="text-sm">{user.avatar}</span>
+                ) : (
+                  <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 text-white font-bold text-[11px] flex items-center justify-center shadow-inner">
+                    {initial}
+                  </div>
+                )}
+                <span className="text-xs font-semibold text-slate-200 group-hover:text-purple-300 transition-colors hidden sm:inline max-w-[120px] truncate">
                   {user.name}
                 </span>
-                
-                <div className="w-px h-3.5 bg-white/10 mx-1 hidden sm:block" />
+              </Link>
 
-                <button 
-                  onClick={onLogout} 
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-red-300 hover:bg-red-500/10 transition-all duration-150"
-                  title="Sign out of ClauseGuard"
-                >
-                  <LogOut size={13} />
-                  <span>Sign out</span>
-                </button>
-              </div>
+              <button 
+                onClick={onLogout} 
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all duration-150"
+                title="Sign out of ClauseGuard"
+              >
+                <LogOut size={13} />
+                <span className="hidden sm:inline">Sign out</span>
+              </button>
             </div>
           )}
         </div>
@@ -90,25 +102,26 @@ export default function AppShell({ children }) {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/calculator" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
+                    <CheckCircle2 size={13} className="text-purple-400" />
+                    <span>Affordability Calculator</span>
+                  </Link>
+                </li>
+                <li>
                   <Link to="/vault" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
                     <Lock size={13} className="text-purple-400" />
                     <span>Encrypted Locker Vault</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/glossary" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
-                    <BookOpen size={13} className="text-purple-400" />
-                    <span>Legal Glossary</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/comparison" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
-                    <GitCompare size={13} className="text-purple-400" />
-                    <span>Draft Comparison Diff</span>
+                  <Link to="/profile" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
+                    <ShieldCheck size={13} className="text-purple-400" />
+                    <span>Profile & Security</span>
                   </Link>
                 </li>
               </ul>
             </div>
+
 
             {/* Col 3: Analysis Capabilities */}
             <div className="space-y-2.5">

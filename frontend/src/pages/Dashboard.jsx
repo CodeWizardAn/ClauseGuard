@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { FileText, Lock, ArrowRight, Scale, Zap } from 'lucide-react'
+import { FileText, Lock, ArrowRight, Scale, Calculator, User } from 'lucide-react'
 import AppShell from '../components/AppShell'
 import { useAuth } from '../auth'
 import ClauseGuardLogo from '../components/ClauseGuardLogo'
@@ -28,10 +28,10 @@ export default function Dashboard() {
           </h1>
 
           <p className="text-slate-400 text-sm sm:text-base leading-relaxed mb-8">
-            Welcome, {user?.name?.split(' ')[0] || 'User'}. Upload any agreement to translate complex clauses, evaluate financial commitments against your income, and detect missing legal protections.
+            Welcome, {user?.name?.split(' ')[0] || 'User'}. Upload any agreement to translate complex clauses, stress-test financial commitments against your income, or manage your secure vault.
           </p>
 
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <button 
               onClick={() => navigate('/analyze')} 
               className="btn-primary !px-6 !py-3 text-sm flex items-center gap-2"
@@ -40,22 +40,29 @@ export default function Dashboard() {
               <span>Audit Document</span>
             </button>
             <button 
-              onClick={() => navigate('/vault')} 
+              onClick={() => navigate('/calculator')} 
               className="btn-secondary !px-5 !py-3 text-sm flex items-center gap-2"
             >
-              <Lock size={15} />
-              <span>Open Vault</span>
+              <Calculator size={15} />
+              <span>Stress-Test Math</span>
+            </button>
+            <button 
+              onClick={() => navigate('/profile')} 
+              className="btn-secondary !px-5 !py-3 text-sm flex items-center gap-2"
+            >
+              <User size={15} />
+              <span>Profile & Security</span>
             </button>
           </div>
         </div>
 
-        {/* 3 Core Highlight Feature Cards (matching reference image) */}
+        {/* 3 Core Highlight Feature Cards */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-white mb-1">
-            Secure & Reliable Analysis
+            Secure & Reliable Tools
           </h2>
           <p className="text-xs text-slate-400">
-            Backed by Indian Legal Frameworks & Plain Language Intelligence
+            Backed by Grounded Legal Standards & Deterministic Financial Math
           </p>
         </div>
 
@@ -79,19 +86,19 @@ export default function Dashboard() {
             </span>
           </div>
 
-          {/* Card 2: Fast Intelligence (Purple Halo) */}
+          {/* Card 2: Standalone Affordability Calculator (Purple Halo) */}
           <div 
-            onClick={() => navigate('/analyze')}
+            onClick={() => navigate('/calculator')}
             className="card card-halo-purple p-6 text-center group cursor-pointer hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
           >
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex items-center justify-center mx-auto mb-5 shadow-lg shadow-purple-500/40 group-hover:scale-110 transition-transform">
-              <Zap size={22} className="stroke-[2.5]" />
+              <Calculator size={22} className="stroke-[2.5]" />
             </div>
             <h3 className="text-lg font-bold text-white mb-2">
               Smart Affordability
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-5">
-              Calculates real monthly commitments, income ratios, and safety buffers based on your city.
+              Instant standalone stress-test of rent or loan EMIs against your salary. No document upload required.
             </p>
             <span className="text-xs font-semibold text-purple-400 group-hover:text-purple-300 flex items-center justify-center gap-1">
               Calculate Math <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
@@ -121,3 +128,4 @@ export default function Dashboard() {
     </AppShell>
   )
 }
+
