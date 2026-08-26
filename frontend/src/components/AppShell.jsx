@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Shield, BookOpen, GitCompare, FileText, Lock, CheckCircle2, ShieldCheck, LogOut } from 'lucide-react'
 import { useAuth } from '../auth'
+import ClauseGuardLogo from './ClauseGuardLogo'
 
 export default function AppShell({ children }) {
   const { user, logout } = useAuth()
@@ -19,10 +20,8 @@ export default function AppShell({ children }) {
       <header className="border-b border-purple-500/15 bg-[#0b0e1e]/85 backdrop-blur-xl px-6 py-3.5 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           {/* Logo */}
-          <Link to="/dashboard" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#4f46e5] border border-purple-400/30 text-white flex items-center justify-center shadow-lg shadow-purple-500/25 group-hover:scale-105 transition-transform duration-200">
-              <Shield size={16} className="stroke-[2.5]" />
-            </div>
+          <Link to="/dashboard" className="flex items-center gap-3 group">
+            <ClauseGuardLogo size={36} className="group-hover:scale-105 transition-transform duration-200" />
             <span className="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
               Clause<span className="text-gradient-purple font-extrabold">Guard</span>
             </span>
@@ -67,9 +66,7 @@ export default function AppShell({ children }) {
             {/* Col 1: Brand & Overview */}
             <div className="space-y-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#7c3aed] to-[#4f46e5] text-white flex items-center justify-center">
-                  <Shield size={14} />
-                </div>
+                <ClauseGuardLogo size={26} />
                 <span className="font-bold text-white tracking-tight">ClauseGuard</span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
@@ -79,6 +76,7 @@ export default function AppShell({ children }) {
                 Zero-Knowledge Privacy · Client-Side Redacted
               </div>
             </div>
+
 
             {/* Col 2: Features & Tools */}
             <div className="space-y-2.5">

@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from 'react-router-dom'
 import { Shield } from 'lucide-react'
 import API from '../api'
 import { useAuth } from '../auth'
+import ClauseGuardLogo from '../components/ClauseGuardLogo'
 
 const EMAIL_OK = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/
 
@@ -68,8 +69,8 @@ export default function Auth() {
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7c3aed] to-[#4f46e5] text-white flex items-center justify-center mb-4 p-3 shadow-xl shadow-purple-500/30">
-              <Shield size={28} className="stroke-[2.5]" />
+            <div className="mb-3 hover:scale-105 transition-transform duration-200">
+              <ClauseGuardLogo size={68} />
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight text-center">
               Clause<span className="text-gradient-purple">Guard</span>
@@ -78,6 +79,7 @@ export default function Auth() {
               {isLogin ? 'Sign in to access your contract analyses.' : 'Create your account. Zero-knowledge PII protection.'}
             </p>
           </div>
+
 
           {/* Form */}
           <form onSubmit={submit} className="card p-7 sm:p-8 space-y-4 border-purple-500/20">
