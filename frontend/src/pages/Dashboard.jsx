@@ -1,15 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import { FileText, Lock, ArrowRight, Scale, Zap, ShieldCheck } from 'lucide-react'
+import { FileText, Lock, ArrowRight, Scale, Zap } from 'lucide-react'
 import AppShell from '../components/AppShell'
 import { useAuth } from '../auth'
-
-const KEYWORDS = [
-  { label: 'Plain-Language Summaries', desc: 'No jargon' },
-  { label: '28 Indian Acts Database', desc: 'Statutory citations' },
-  { label: 'Real Affordability Math', desc: 'EMI & rent limits' },
-  { label: 'Omission Trap Radar', desc: 'Missing protections' },
-  { label: 'Zero-PII Storage', desc: 'Names & phones erased' },
-]
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -17,27 +9,14 @@ export default function Dashboard() {
 
   return (
     <AppShell>
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        {/* Keyword Explanation Bar */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-          {KEYWORDS.map((kw, i) => (
-            <div 
-              key={i} 
-              className="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium flex items-center gap-1.5"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-              <span>{kw.label}</span>
-            </div>
-          ))}
-        </div>
-
+      <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Hero Section */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-16">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
             Analyze Contracts with <span className="text-gradient-purple">Full Confidence</span>
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
-            Welcome, {user?.name?.split(' ')[0] || 'User'}. Upload any agreement to translate dense legal language, calculate your exact monthly affordability risks, and detect missing statutory protections.
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed mb-8">
+            Welcome, {user?.name?.split(' ')[0] || 'User'}. Upload any agreement to translate complex clauses, evaluate financial commitments against your income, and detect missing legal protections.
           </p>
 
           <div className="flex items-center justify-center gap-3">
@@ -64,7 +43,7 @@ export default function Dashboard() {
             Secure & Reliable Analysis
           </h2>
           <p className="text-xs text-slate-400">
-            Backed by 28 Indian Statutes & Plain Language Intelligence
+            Backed by Indian Legal Frameworks & Plain Language Intelligence
           </p>
         </div>
 
