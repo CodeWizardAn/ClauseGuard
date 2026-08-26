@@ -3,45 +3,38 @@ import React from 'react'
 export default function AmbientBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
-      {/* Base Rich Gradient Canvas matching reference image */}
+      {/* Base Deep Midnight Obsidian Canvas */}
       <div 
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(135deg, #060818 0%, #0d102d 30%, #140e34 60%, #080a1c 100%)'
+          background: 'linear-gradient(135deg, #050818 0%, #080c26 35%, #0d1136 65%, #050716 100%)'
         }}
       />
 
-      {/* Top-Right & Upper Center: Rich Royal Indigo & Deep Blue Visible Shade */}
+      {/* Top-Right: Luminous Electric Cyan & Cerulean Glass Refraction Glow */}
       <div 
-        className="absolute -top-[120px] right-[-50px] w-[750px] h-[650px] rounded-full blur-[110px] opacity-70 pointer-events-none"
+        className="absolute -top-[100px] -right-[50px] w-[800px] h-[700px] rounded-full blur-[130px] opacity-65 pointer-events-none"
         style={{ 
-          background: 'radial-gradient(circle, #252077 0%, #1e1b4b 50%, transparent 80%)' 
+          background: 'radial-gradient(circle, #0284c7 0%, #0369a1 35%, #1e1b4b 70%, transparent 85%)' 
         }}
       />
 
-      {/* Middle-Left & Center: Rich Atmospheric Deep Violet Bloom */}
+      {/* Middle-Left: Rich Atmospheric Ultraviolet & Deep Indigo Bloom */}
       <div 
-        className="absolute top-[30%] -left-[100px] w-[650px] h-[650px] rounded-full blur-[120px] opacity-60 pointer-events-none"
+        className="absolute top-[25%] -left-[120px] w-[750px] h-[750px] rounded-full blur-[140px] opacity-55 pointer-events-none"
         style={{ 
-          background: 'radial-gradient(circle, #4c1d95 0%, #31105e 50%, transparent 80%)' 
+          background: 'radial-gradient(circle, #4338ca 0%, #31105e 45%, #1e1b4b 75%, transparent 90%)' 
         }}
       />
 
-      {/* Bottom-Right: Soft Visible Lavender & Violet Radiance */}
+      {/* Bottom-Right: Soft Cyan-Violet Caustic Accent */}
       <div 
-        className="absolute -bottom-[80px] right-[5%] w-[600px] h-[500px] rounded-full blur-[90px] opacity-55 pointer-events-none"
+        className="absolute -bottom-[80px] right-[10%] w-[650px] h-[550px] rounded-full blur-[100px] opacity-45 pointer-events-none"
         style={{ 
-          background: 'radial-gradient(circle, #7c3aed 0%, #581c87 45%, #1e1b4b 75%, transparent 90%)' 
-        }}
-      />
-
-      {/* Subtle Bottom-Right Ambient Flare Highlight */}
-      <div 
-        className="absolute bottom-0 right-0 w-[350px] h-[300px] rounded-full blur-[70px] opacity-35 pointer-events-none"
-        style={{ 
-          background: 'radial-gradient(circle, #c084fc 0%, #9333ea 50%, transparent 80%)' 
+          background: 'radial-gradient(circle, #38bdf8 0%, #7c3aed 40%, #0f172a 80%, transparent 90%)' 
         }}
       />
     </div>
   )
 }
+

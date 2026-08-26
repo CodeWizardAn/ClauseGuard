@@ -137,6 +137,8 @@ export default function AppShell({ children }) {
 
 
 
+
+
       {/* Main Content Area */}
       <main className="flex-1">{children}</main>
 

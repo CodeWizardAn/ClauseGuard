@@ -149,12 +149,53 @@ CATEGORY_BENCHMARKS = {
         },
         {
             "name": "Defined Cure Period for Technical Breaches",
-            "statute": "Specific Relief Act 1963, Section 10",
+            "statute": "Specific Relief Act 1963, Section 10 & Section 20",
             "why": "Prevents immediate contract cancellation for minor delays without giving you 30 days to rectify the issue.",
             "clause": "Neither party may terminate for breach without first providing written notice specifying the default and allowing a 30 (thirty) day cure period to remedy the breach."
         }
+    ],
+    "Real Estate Purchase Agreement": [
+        {
+            "name": "RERA 5-Year Structural Defect Liability Guarantee",
+            "statute": "Real Estate (Regulation and Development) Act 2016 (RERA), Section 14(3)",
+            "why": "Guarantees that the builder must rectify any structural defect or poor workmanship within 30 days at zero additional cost for 5 years.",
+            "clause": "In case of any structural defect or workmanship defect brought to notice within 5 years from possession, the Promoter shall rectify such defects without further charge within 30 days."
+        },
+        {
+            "name": "Delay Compensation & Right to Full Refund with Interest",
+            "statute": "RERA 2016, Section 18",
+            "why": "Without this statutory clause, builders delay handover for years without paying equitable delay compensation to allottees.",
+            "clause": "If the Promoter fails to hand over possession by the agreed date, the Allottee shall have the right to withdraw and claim full refund with interest at SBI MCLR + 2%, or receive monthly interest till handover."
+        },
+        {
+            "name": "Certified Carpet Area Deliverable Standard",
+            "statute": "RERA 2016, Section 2(k)",
+            "why": "Prevents builder from charging for ambiguous super built-up area without delivering the contracted net usable carpet area.",
+            "clause": "The purchase consideration is based strictly on the net usable Carpet Area as defined by RERA, certified by an independent licensed architect."
+        }
+    ],
+    "Freelance / Independent Contractor Agreement": [
+        {
+            "name": "Milestone Payments & Kill Fee on Termination",
+            "statute": "Indian Contract Act 1872, Section 70 (Quantum Meruit)",
+            "why": "Prevents client from terminating mid-project without paying for work completed up to the date of cancellation.",
+            "clause": "In the event of client termination without cause, the Contractor shall be entitled to full payment for all milestones and hours completed up to the termination date plus a 20% cancellation kill fee."
+        },
+        {
+            "name": "Scope Creep & Change Order Protection",
+            "statute": "Standard Indian Commercial Service Best Practices",
+            "why": "Protects freelancers from unending client revision demands outside the agreed statement of work.",
+            "clause": "Any additional deliverables, revisions exceeding 2 rounds, or out-of-scope tasks shall require an executed written Change Order with agreed additional fees before commencement."
+        },
+        {
+            "name": "Copyright Retained Until Final Invoicing Settlement",
+            "statute": "Copyright Act 1957, Section 19",
+            "why": "Ensures client cannot use designs, code, or materials if they refuse to pay the final project invoice.",
+            "clause": "Intellectual property rights in custom deliverables shall transfer to the Client solely upon 100% full and final payment of all corresponding milestone invoices."
+        }
     ]
 }
+
 
 
 

@@ -19,7 +19,9 @@
   --border-card-hover: rgba(168, 85, 247, 0.35);
   
   --purple-gradient: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+  --cyan-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
   --purple-btn: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  --theme-btn: linear-gradient(135deg, #0ea5e9 0%, #6366f1 50%, #9333ea 100%);
 }
 
 html, body, #root {
@@ -60,6 +62,14 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* Iridescent Cyan-Violet Luxury Gradient Text Accent */
+.text-gradient-cyan-purple {
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 
 /* Frosted Neat Glass Cards */
 .card {
