@@ -11,5 +11,6 @@ SUPPORTED_LANGUAGES = {
     "pa": "Punjabi",
 }
 
-FAST_MODEL = "openai/gpt-oss-20b"
-REASONING_MODEL = "openai/gpt-oss-120b"
+# Universally supported, ultra-fast Groq production model
+FAST_MODEL = "llama-3.1-8b-instant"
+REASONING_MODEL = "llama-3.1-8b-instant"

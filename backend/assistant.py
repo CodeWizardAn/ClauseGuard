@@ -103,11 +103,12 @@ def generate_assistant_response(query: str, chat_history: List[Dict] = None) -> 
             })
 
             completion = groq_client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model="llama-3.1-8b-instant",
                 messages=messages,
                 temperature=0.3,
                 max_tokens=600,
             )
+
             if completion.choices and completion.choices[0].message.content:
                 return completion.choices[0].message.content.strip()
         except Exception:

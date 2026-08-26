@@ -185,18 +185,40 @@ Return ONLY valid JSON matching this exact structure:
 
     try:
         response = client.chat.completions.create(
-            model=REASONING_MODEL,
+            model=FAST_MODEL,
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
+            temperature=0.1,
+            max_tokens=850,
         )
         raw = response.choices[0].message.content.strip()
         if raw.startswith("```"):
             raw = re.sub(r"```json|```", "", raw).strip()
         data = json.loads(raw)
+
+        # Smart Mathematical Normalization & Sanity Check
+        # Extract ratio percent number if present
+        ratio_str = str(data.get("monthly_math", {}).get("ratio_pct", ""))
+        ratio_nums = re.findall(r"(\d+)", ratio_str)
+        ratio_val = int(ratio_nums[0]) if ratio_nums else None
+
+        # Check if ratio is very healthy (< 35%)
+        if ratio_val is not None and ratio_val <= 35:
+            data["verdict_badge"] = "Affordable & Safe"
+            data["verdict_badge_color"] = "green"
+            if not data.get("affordability_score") or data["affordability_score"] < 70:
+                data["affordability_score"] = max(75, 100 - ratio_val)
+            if "High Risk" in data.get("verdict_title", "") or "Caution" in data.get("verdict_title", ""):
+                data["verdict_title"] = "Comfortable & Affordable — Well Within Safe Budget"
+        elif ratio_val is not None and ratio_val > 48:
+            data["verdict_badge"] = "High Risk"
+            data["verdict_badge_color"] = "red"
+            data["affordability_score"] = min(35, max(5, 100 - ratio_val))
+
         return data
     except Exception as e:
         print(f"[smart_context] generate_personalized_verdict error: {e}")
         return _fallback_verdict(user_answers, contract_type)
+
 
 
 def _fallback_questions(contract_type: str) -> dict:
