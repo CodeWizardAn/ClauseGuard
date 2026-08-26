@@ -2,49 +2,43 @@ import React from 'react'
 
 export default function AmbientBackground() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
-      {/* Background Image Layer with subtle blend */}
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none bg-[#070a10]">
+      {/* Precision Micro Dot Matrix */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.06] mix-blend-luminosity scale-105 transition-transform duration-1000 ease-out"
-        style={{ backgroundImage: "url('/security_bg.jpg')" }}
-      />
-
-      {/* Cyber / Legal Matrix Dot Grid */}
-      <div 
-        className="absolute inset-0 opacity-[0.14]"
+        className="absolute inset-0 opacity-[0.2]"
         style={{
-          backgroundImage: 'radial-gradient(rgba(196, 165, 116, 0.45) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
+          backgroundImage: 'radial-gradient(rgba(212, 175, 55, 0.35) 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
         }}
       />
 
-      {/* Ambient Moving Glow Orbs */}
-      {/* Orb 1: Warm Gold (top-left / center) */}
+      {/* Top Header Shimmer Bar */}
       <div 
-        className="absolute -top-[15%] -left-[10%] w-[650px] h-[650px] rounded-full blur-[120px] opacity-25 animate-ambient-1 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #c4a574 0%, rgba(196, 165, 116, 0.2) 60%, transparent 80%)' }}
+        className="absolute -top-[120px] left-1/2 -translate-x-1/2 w-[800px] h-[340px] rounded-full blur-[140px] opacity-25 animate-glow-1 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse, #d4af37 0%, rgba(212, 175, 55, 0.25) 50%, transparent 80%)' }}
       />
 
-      {/* Orb 2: Cyber Blue / Deep Indigo (top-right / middle) */}
+      {/* Deep Cyber Blue Ambient Bloom (Right) */}
       <div 
-        className="absolute top-[20%] -right-[15%] w-[700px] h-[700px] rounded-full blur-[140px] opacity-25 animate-ambient-2 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0.18) 60%, transparent 80%)' }}
+        className="absolute top-[30%] -right-[150px] w-[650px] h-[650px] rounded-full blur-[160px] opacity-20 animate-glow-2 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #2563eb 0%, rgba(37, 99, 235, 0.18) 50%, transparent 80%)' }}
       />
 
-      {/* Orb 3: Emerald Shield Green (bottom-left) */}
+      {/* Deep Emerald / Gold Ambient Bloom (Bottom Left) */}
       <div 
-        className="absolute -bottom-[20%] left-[15%] w-[600px] h-[600px] rounded-full blur-[130px] opacity-20 animate-ambient-3 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #10b981 0%, rgba(16, 185, 129, 0.15) 60%, transparent 80%)' }}
+        className="absolute -bottom-[200px] -left-[100px] w-[700px] h-[700px] rounded-full blur-[160px] opacity-15 animate-glow-1 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #10b981 0%, rgba(212, 175, 55, 0.15) 50%, transparent 80%)' }}
       />
 
-      {/* Orb 4: Purple / Deep Violet (bottom-right / center) */}
+      {/* Subtle Noise / Grain Overlay for Textured Polish */}
       <div 
-        className="absolute top-[60%] right-[25%] w-[550px] h-[550px] rounded-full blur-[120px] opacity-15 animate-ambient-4 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0.12) 60%, transparent 80%)' }}
+        className="absolute inset-0 opacity-[0.025] mix-blend-overlay pointer-events-none"
+        style={{
+          backgroundImage: "url('/security_bg.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       />
-
-      {/* Subtle sweeping light shimmer */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#c4a574]/[0.02] to-transparent animate-shimmer pointer-events-none" />
     </div>
   )
 }

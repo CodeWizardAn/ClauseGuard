@@ -63,64 +63,75 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen app-bg flex flex-col">
-      <div className="flex-1 flex items-center justify-center p-6">
+    <div className="min-h-screen app-bg flex flex-col justify-between selection:bg-[#d4af37]/30 selection:text-white">
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
         <div className="w-full max-w-md">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-12 h-12 rounded-xl bg-[#c4a574] text-[#14110c] flex items-center justify-center mb-4">
-              <Shield size={22} />
+            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#d4af37] to-[#b89125] text-[#070a10] flex items-center justify-center mb-4 p-3 shadow-xl shadow-[#d4af37]/20">
+              <Shield size={26} className="stroke-[2.5]" />
             </div>
-            <h1 className="text-2xl font-semibold text-[#f4f1ea]">ClauseGuard</h1>
-            <p className="text-stone-400 text-sm mt-2 text-center">
-              {isLogin ? 'Log in to continue' : 'Create your account. We encrypt your email and phone.'}
+            <h1 className="text-3xl font-extrabold text-white tracking-tight text-center">
+              ClauseGuard
+            </h1>
+            <p className="text-slate-400 text-sm mt-2 text-center max-w-sm leading-relaxed">
+              {isLogin ? 'Welcome back. Log in to audit your contracts.' : 'Create your secure account. We encrypt your personal data.'}
             </p>
           </div>
 
-          <form onSubmit={submit} className="card p-7 space-y-4">
+          <form onSubmit={submit} className="card p-7 sm:p-8 space-y-4.5">
             {!isLogin && (
               <>
                 <div>
-                  <label className="text-xs text-stone-400 mb-1 block">Full name</label>
-                  <input className="input" value={form.name} onChange={set('name')} placeholder="Your name" />
+                  <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Full name</label>
+                  <input className="input" value={form.name} onChange={set('name')} placeholder="Your legal or full name" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs text-stone-400 mb-1 block">Age</label>
+                    <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Age</label>
                     <input className="input" type="number" value={form.age} onChange={set('age')} placeholder="18" />
                   </div>
                   <div>
-                    <label className="text-xs text-stone-400 mb-1 block">Mobile number</label>
+                    <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Mobile</label>
                     <input className="input" value={form.phone} onChange={set('phone')} placeholder="10-digit number" />
                   </div>
                 </div>
               </>
             )}
             <div>
-              <label className="text-xs text-stone-400 mb-1 block">Email</label>
-              <input className="input" type="email" value={form.email} onChange={set('email')} placeholder="you@gmail.com" />
+              <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Email Address</label>
+              <input className="input" type="email" value={form.email} onChange={set('email')} placeholder="name@domain.com" />
             </div>
             <div>
-              <label className="text-xs text-stone-400 mb-1 block">Password</label>
+              <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Password</label>
               <input className="input" type="password" value={form.password} onChange={set('password')} placeholder="Starts with a capital letter" />
-              <p className="text-[11px] text-stone-500 mt-1">Minimum 6 characters. First letter must be capital, e.g. Hello1</p>
+              <p className="text-[11px] text-slate-500 mt-1.5">Minimum 6 characters. First letter capital (e.g. Secret1)</p>
             </div>
-            {error && <p className="text-sm text-red-400">{error}</p>}
-            <button type="submit" disabled={busy} className="btn-primary w-full">
-              {busy ? 'Please wait…' : isLogin ? 'Log in' : 'Register'}
+            {error && (
+              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
+                {error}
+              </div>
+            )}
+            <button type="submit" disabled={busy} className="btn-primary w-full mt-2 py-3">
+              {busy ? 'Securing session…' : isLogin ? 'Sign In to ClauseGuard' : 'Create Account'}
             </button>
           </form>
 
-          <p className="text-center text-sm text-stone-500 mt-6">
-            {isLogin ? 'New here?' : 'Already have an account?'}
-            <button type="button" className="text-[#c4a574] ml-2" onClick={() => { setIsLogin(!isLogin); setError('') }}>
-              {isLogin ? 'Register' : 'Log in'}
+          <p className="text-center text-sm text-slate-400 mt-6">
+            {isLogin ? 'New to ClauseGuard?' : 'Already registered?'}
+            <button 
+              type="button" 
+              className="text-[#d4af37] font-semibold ml-2 hover:underline focus:outline-none" 
+              onClick={() => { setIsLogin(!isLogin); setError('') }}
+            >
+              {isLogin ? 'Create an account' : 'Sign in'}
             </button>
           </p>
         </div>
       </div>
-      <footer className="px-6 py-5">
-        <p className="text-center text-xs text-stone-600">Not legal advice. For understanding documents only.</p>
+      <footer className="px-6 py-4 text-center">
+        <p className="text-xs text-slate-500 font-medium">Encrypted & Zero-Knowledge Contract Analysis · Indian Legal Framework</p>
       </footer>
     </div>
   )
+
 }
