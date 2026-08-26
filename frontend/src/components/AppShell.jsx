@@ -93,76 +93,89 @@ export default function AppShell({ children }) {
             )}
           </div>
 
-          {/* Right: Unified Native Accessible User Menu */}
+          {/* Right: User Menu & Dedicated Smart Logout Button */}
           {user && (
-            <details className="relative list-none group" ref={detailsRef}>
-              <summary className="flex items-center gap-2.5 py-1 px-2 rounded-xl hover:bg-white/[0.04] transition-all border border-transparent hover:border-white/10 cursor-pointer select-none list-none marker:hidden [&::-webkit-details-marker]:hidden">
-                {user.avatar && user.avatar.startsWith('data:image') ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-7 h-7 rounded-full object-cover border border-purple-400/40 shrink-0"
-                  />
-                ) : (
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
-                    {initial}
+            <div className="flex items-center gap-3">
+              <details className="relative list-none group" ref={detailsRef}>
+                <summary className="flex items-center gap-2.5 py-1 px-2.5 rounded-xl hover:bg-white/[0.04] transition-all border border-transparent hover:border-white/10 cursor-pointer select-none list-none marker:hidden [&::-webkit-details-marker]:hidden">
+                  {user.avatar && user.avatar.startsWith('data:image') ? (
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="w-7 h-7 rounded-full object-cover border border-purple-400/40 shrink-0"
+                    />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
+                      {initial}
+                    </div>
+                  )}
+                  <span className="text-xs font-semibold text-slate-200 max-w-[130px] truncate hidden sm:inline">
+                    {user.name}
+                  </span>
+                  <ChevronDown size={14} className="text-slate-400 group-open:rotate-180 transition-transform duration-200" />
+                </summary>
+
+                {/* Native Dropdown Popover */}
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0c0f2b] border border-white/15 shadow-2xl shadow-black/90 py-2 z-[9999]">
+                  <div className="px-4 py-2.5 border-b border-white/[0.08]">
+                    <p className="text-xs font-bold text-white truncate">{user.name}</p>
+                    <p className="text-[11px] text-slate-400 truncate">{user.email || user.role || 'Member'}</p>
                   </div>
-                )}
-                <span className="text-xs font-semibold text-slate-200 max-w-[130px] truncate hidden sm:inline">
-                  {user.name}
-                </span>
-                <ChevronDown size={14} className="text-slate-400 group-open:rotate-180 transition-transform duration-200" />
-              </summary>
 
-              {/* Native Dropdown Popover */}
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0c0f2b] border border-white/15 shadow-2xl shadow-black/90 py-2 z-[9999]">
-                <div className="px-4 py-2.5 border-b border-white/[0.08]">
-                  <p className="text-xs font-bold text-white truncate">{user.name}</p>
-                  <p className="text-[11px] text-slate-400 truncate">{user.email || user.role || 'Member'}</p>
+                  <div className="py-1">
+                    <Link
+                      to="/profile"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+                    >
+                      <Settings size={14} className="text-purple-400 shrink-0" />
+                      <span>Account Settings</span>
+                    </Link>
+
+                    <Link
+                      to="/vault"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+                    >
+                      <Lock size={14} className="text-purple-400 shrink-0" />
+                      <span>Document Vault</span>
+                    </Link>
+
+                    <Link
+                      to="/calculator"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
+                    >
+                      <Calculator size={14} className="text-purple-400 shrink-0" />
+                      <span>Affordability Calculator</span>
+                    </Link>
+                  </div>
+
+                  <div className="border-t border-white/[0.08] pt-1">
+                    <button
+                      type="button"
+                      onClick={handleSignOut}
+                      className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer font-medium"
+                    >
+                      <LogOut size={14} className="shrink-0" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
                 </div>
+              </details>
 
-                <div className="py-1">
-                  <Link
-                    to="/profile"
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
-                  >
-                    <Settings size={14} className="text-purple-400 shrink-0" />
-                    <span>Account Settings</span>
-                  </Link>
-
-                  <Link
-                    to="/vault"
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
-                  >
-                    <Lock size={14} className="text-purple-400 shrink-0" />
-                    <span>Document Vault</span>
-                  </Link>
-
-                  <Link
-                    to="/calculator"
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors"
-                  >
-                    <Calculator size={14} className="text-purple-400 shrink-0" />
-                    <span>Affordability Calculator</span>
-                  </Link>
-                </div>
-
-
-                <div className="border-t border-white/[0.08] pt-1">
-                  <button
-                    type="button"
-                    onClick={handleSignOut}
-                    className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer font-medium"
-                  >
-                    <LogOut size={14} className="shrink-0" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              </div>
-            </details>
+              {/* Dedicated Smart Executive Logout Button */}
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-rose-400 hover:bg-rose-500/10 border border-white/10 hover:border-rose-500/30 transition-all cursor-pointer shadow-sm"
+                title="Sign out of ClauseGuard"
+              >
+                <LogOut size={13} className="text-slate-400 group-hover:text-rose-400" />
+                <span className="hidden sm:inline">Sign Out</span>
+              </button>
+            </div>
           )}
         </div>
       </header>
+
 
       {/* Main Content Area */}
       <main className="flex-1">{children}</main>
