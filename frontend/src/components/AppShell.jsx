@@ -13,21 +13,22 @@ export default function AppShell({ children }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef(null)
 
-  const onLogout = () => {
-    logout()
-    navigate('/')
+  const handleNavigate = (path) => {
+    setMenuOpen(false)
+    navigate(path)
   }
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside (using 'click' to avoid mousedown unmount race)
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false)
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
   }, [])
+
 
   const initial = user?.name ? user.name.trim().charAt(0).toUpperCase() : 'U'
 
@@ -112,48 +113,47 @@ export default function AppShell({ children }) {
 
 
                   <div className="py-1">
-                    <Link
-                      to="/profile"
-                      onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.05] transition-colors"
+                    <button
+                      onClick={() => handleNavigate('/profile')}
+                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.07] transition-colors cursor-pointer"
                     >
-                      <Settings size={14} className="text-purple-400" />
+                      <Settings size={14} className="text-purple-400 shrink-0" />
                       <span>Account Settings</span>
-                    </Link>
+                    </button>
 
-                    <Link
-                      to="/vault"
-                      onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.05] transition-colors"
+                    <button
+                      onClick={() => handleNavigate('/vault')}
+                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.07] transition-colors cursor-pointer"
                     >
-                      <Lock size={14} className="text-purple-400" />
+                      <Lock size={14} className="text-purple-400 shrink-0" />
                       <span>Document Vault</span>
-                    </Link>
+                    </button>
 
-                    <Link
-                      to="/calculator"
-                      onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.05] transition-colors"
+                    <button
+                      onClick={() => handleNavigate('/calculator')}
+                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-white/[0.07] transition-colors cursor-pointer"
                     >
-                      <Calculator size={14} className="text-purple-400" />
+                      <Calculator size={14} className="text-purple-400 shrink-0" />
                       <span>Affordability Calculator</span>
-                    </Link>
+                    </button>
                   </div>
 
                   <div className="border-t border-white/[0.08] pt-1">
                     <button
                       onClick={() => {
                         setMenuOpen(false)
-                        onLogout()
+                        logout()
+                        navigate('/')
                       }}
-                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors"
+                      className="flex items-center gap-2.5 w-full text-left px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer font-medium"
                     >
-                      <LogOut size={14} />
+                      <LogOut size={14} className="shrink-0" />
                       <span>Sign Out</span>
                     </button>
                   </div>
                 </div>
               )}
+
             </div>
           )}
         </div>
