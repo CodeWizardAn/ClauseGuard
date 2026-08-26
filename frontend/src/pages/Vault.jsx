@@ -40,16 +40,9 @@ export default function Vault() {
   return (
     <AppShell>
       <div className="max-w-5xl mx-auto px-6 py-10">
-        {/* Back Link */}
-        <button 
-          onClick={() => navigate('/dashboard')} 
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors mb-6"
-        >
-          <ArrowLeft size={13} /> Back to Dashboard
-        </button>
-
         {/* Page Header */}
         <div className="mb-8">
+
           <h1 className="text-3xl font-extrabold text-white tracking-tight">
             Encrypted Document <span className="text-gradient-purple">Vault</span>
           </h1>

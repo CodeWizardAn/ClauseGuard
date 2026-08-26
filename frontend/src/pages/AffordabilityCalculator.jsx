@@ -73,16 +73,9 @@ export default function AffordabilityCalculator() {
   return (
     <AppShell>
       <div className="max-w-4xl mx-auto px-6 py-10">
-        {/* Back Link */}
-        <button 
-          onClick={() => navigate('/dashboard')} 
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors mb-6"
-        >
-          <ArrowLeft size={13} /> Back to Dashboard
-        </button>
-
         {/* Header */}
         <div className="mb-8">
+
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-purple-300 text-xs font-semibold uppercase tracking-wider mb-3">
             <Calculator size={13} className="text-purple-400" /> Instant Financial Stress-Tester
           </div>
