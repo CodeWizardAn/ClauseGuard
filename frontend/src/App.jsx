@@ -83,6 +83,8 @@ function AnimatedRoutes() {
 }
 
 
+import SiteAssistant from './components/SiteAssistant'
+
 export default function App() {
   return (
     <AuthProvider>
@@ -92,7 +94,10 @@ export default function App() {
         <div className="relative z-10">
           <AnimatedRoutes />
         </div>
+        {/* Global Site-Wide Floating AI Assistant */}
+        <SiteAssistant />
       </BrowserRouter>
     </AuthProvider>
   )
 }
+

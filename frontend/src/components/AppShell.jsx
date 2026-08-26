@@ -241,10 +241,8 @@ export default function AppShell({ children }) {
           </div>
         </div>
       </footer>
-
-      {/* Global Site-Wide AI Assistant & Legal Jargon Copilot */}
-      <SiteAssistant />
     </div>
   )
 }
+
 

@@ -74,19 +74,20 @@ export default function SiteAssistant() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 select-none">
+    <div className="fixed bottom-6 right-6 z-[9999] select-none">
       {/* Floating Trigger Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="group relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-xs shadow-xl shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20"
+          className="group relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-xs shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 hover:scale-105 active:scale-95 transition-all duration-200 border border-white/25 backdrop-blur-xl"
           title="Ask ClauseGuard AI Assistant"
         >
           <Sparkles size={16} className="text-yellow-300 animate-pulse" />
-          <span>Ask AI Assistant</span>
+          <span className="tracking-wide">Ask AI Assistant</span>
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping absolute -top-0.5 -right-0.5" />
         </button>
       )}
+
 
       {/* Expanded Chat Modal */}
       {isOpen && (
