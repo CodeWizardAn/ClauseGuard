@@ -91,7 +91,7 @@ export default function OmissionRadar({ contractId }) {
                 </span>
               )}
             </div>
-            <p className="text-xs text-zinc-500 mt-0.5">Checked against Indian statutory requirements</p>
+            <p className="text-xs text-zinc-500 mt-0.5">Audits for absent standard protective terms</p>
           </div>
         </div>
         {expanded ? <ChevronUp size={16} className="text-zinc-500" /> : <ChevronDown size={16} className="text-zinc-500" />}
@@ -181,11 +181,9 @@ export default function OmissionRadar({ contractId }) {
                           <span className={`text-[11px] px-2 py-0.5 rounded border font-medium ${conf.badgeStyle}`}>
                             {conf.badge}
                           </span>
-                          {item.statute && (
-                            <span className="text-xs text-zinc-400">{item.statute}</span>
-                          )}
                         </div>
                       </div>
+
 
                       <div>
                         <h4 className="text-xs sm:text-sm font-semibold text-zinc-200">{item.name}</h4>

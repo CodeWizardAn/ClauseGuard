@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Shield, BookOpen, GitCompare, FileText, Lock, Scale, ShieldAlert, ArrowUpRight } from 'lucide-react'
+import { Shield, BookOpen, GitCompare, FileText, Lock, CheckCircle2, ShieldCheck } from 'lucide-react'
 import { useAuth } from '../auth'
 
 export default function AppShell({ children }) {
@@ -59,16 +59,16 @@ export default function AppShell({ children }) {
                 <span className="font-bold text-white tracking-tight">ClauseGuard</span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Plain-language legal intelligence and risk auditing for everyday Indian citizens, renters, borrowers, and professionals.
+                Plain-language document analysis and financial risk assessment for agreements, loans, and commercial contracts.
               </p>
               <div className="text-[11px] text-purple-400 font-medium pt-1">
                 Zero-Knowledge Privacy · Client-Side Redacted
               </div>
             </div>
 
-            {/* Col 2: Core Tools */}
+            {/* Col 2: Features & Tools */}
             <div className="space-y-2.5">
-              <p className="text-xs font-bold text-white uppercase tracking-wider">Features & Tools</p>
+              <p className="text-xs font-bold text-white uppercase tracking-wider">Features</p>
               <ul className="space-y-2 text-xs">
                 <li>
                   <Link to="/analyze" className="hover:text-purple-300 transition-colors flex items-center gap-1.5">
@@ -97,48 +97,47 @@ export default function AppShell({ children }) {
               </ul>
             </div>
 
-            {/* Col 3: Indian Law Framework */}
+            {/* Col 3: Analysis Capabilities */}
             <div className="space-y-2.5">
-              <p className="text-xs font-bold text-white uppercase tracking-wider">Legal Framework</p>
-              <ul className="space-y-1.5 text-xs text-slate-400">
+              <p className="text-xs font-bold text-white uppercase tracking-wider">Capabilities</p>
+              <ul className="space-y-2 text-xs text-slate-400">
                 <li className="flex items-center gap-1.5">
-                  <Scale size={13} className="text-purple-400 shrink-0" />
-                  <span>Indian Contract Act 1872</span>
+                  <CheckCircle2 size={13} className="text-purple-400 shrink-0" />
+                  <span>Plain-Language Translations</span>
                 </li>
                 <li className="flex items-center gap-1.5">
-                  <Scale size={13} className="text-purple-400 shrink-0" />
-                  <span>Transfer of Property Act 1882</span>
+                  <CheckCircle2 size={13} className="text-purple-400 shrink-0" />
+                  <span>Affordability & Income Math</span>
                 </li>
                 <li className="flex items-center gap-1.5">
-                  <Scale size={13} className="text-purple-400 shrink-0" />
-                  <span>Consumer Protection Act 2019</span>
+                  <CheckCircle2 size={13} className="text-purple-400 shrink-0" />
+                  <span>Missing Protections Audit</span>
                 </li>
                 <li className="flex items-center gap-1.5">
-                  <Scale size={13} className="text-purple-400 shrink-0" />
-                  <span>DPDP Act 2023 & RERA 2016</span>
+                  <CheckCircle2 size={13} className="text-purple-400 shrink-0" />
+                  <span>Actionable Negotiation Guidance</span>
                 </li>
               </ul>
             </div>
 
             {/* Col 4: Privacy & Notice */}
             <div className="space-y-2.5">
-              <p className="text-xs font-bold text-white uppercase tracking-wider">Compliance & Notice</p>
+              <p className="text-xs font-bold text-white uppercase tracking-wider">Privacy & Terms</p>
               <p className="text-xs text-slate-400 leading-relaxed">
-                ClauseGuard is an educational reading aid for awareness. Outputs are not formal legal advice and do not substitute for a qualified advocate.
+                ClauseGuard is an educational reading aid for awareness. Outputs do not constitute formal legal counsel.
               </p>
               <p className="text-[11px] text-slate-500">
-                Data is AES-256 encrypted and stored locally. Original uploads are immediately discarded.
+                Personal identities, numbers, and names are erased before analysis.
               </p>
             </div>
           </div>
 
           {/* Bottom Row */}
           <div className="border-t border-purple-500/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-            <p>© 2026 ClauseGuard. Built for Indian Legal & Financial Literacy.</p>
-            <div className="flex items-center gap-4 text-slate-400">
-              <span>Llama 3.3 Intelligence</span>
-              <span>·</span>
-              <span>28 Indian Acts Database</span>
+            <p>© 2026 ClauseGuard. All rights reserved.</p>
+            <div className="flex items-center gap-2 text-slate-400">
+              <ShieldCheck size={14} className="text-purple-400" />
+              <span>Document Intelligence & Privacy</span>
             </div>
           </div>
         </div>
