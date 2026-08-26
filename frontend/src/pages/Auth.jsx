@@ -69,16 +69,21 @@ export default function Auth() {
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="flex flex-col items-center mb-8">
-            <div className="mb-3 hover:scale-105 transition-transform duration-200">
-              <ClauseGuardLogo size={68} />
+            <div className="relative mb-4 group cursor-pointer">
+              <div className="absolute -inset-5 rounded-full bg-gradient-to-r from-purple-600/35 via-indigo-500/25 to-pink-500/30 blur-2xl opacity-75 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <ClauseGuardLogo 
+                size={110} 
+                className="relative z-10 hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_35px_rgba(168,85,247,0.5)]" 
+              />
             </div>
-            <h1 className="text-3xl font-extrabold text-white tracking-tight text-center">
+            <h1 className="text-3xl font-black text-white tracking-tight text-center">
               Clause<span className="text-gradient-purple">Guard</span>
             </h1>
             <p className="text-slate-400 text-sm mt-2 text-center max-w-sm leading-relaxed">
               {isLogin ? 'Sign in to access your contract analyses.' : 'Create your account. Zero-knowledge PII protection.'}
             </p>
           </div>
+
 
 
           {/* Form */}

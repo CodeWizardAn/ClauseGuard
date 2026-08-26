@@ -20,12 +20,13 @@ export default function AppShell({ children }) {
       <header className="border-b border-purple-500/15 bg-[#0b0e1e]/85 backdrop-blur-xl px-6 py-3.5 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           {/* Logo */}
-          <Link to="/dashboard" className="flex items-center gap-3 group">
-            <ClauseGuardLogo size={36} className="group-hover:scale-105 transition-transform duration-200" />
-            <span className="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
-              Clause<span className="text-gradient-purple font-extrabold">Guard</span>
+          <Link to="/dashboard" className="flex items-center gap-3.5 group">
+            <ClauseGuardLogo size={46} className="group-hover:scale-105 transition-transform duration-200 drop-shadow-[0_0_15px_rgba(168,85,247,0.35)]" />
+            <span className="font-extrabold text-lg sm:text-xl tracking-tight text-white flex items-center gap-1.5">
+              Clause<span className="text-gradient-purple font-black">Guard</span>
             </span>
           </Link>
+
 
           {/* User Profile & Action */}
           {user && (

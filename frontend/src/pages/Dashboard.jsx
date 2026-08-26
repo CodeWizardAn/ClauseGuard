@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { FileText, Lock, ArrowRight, Scale, Zap } from 'lucide-react'
 import AppShell from '../components/AppShell'
 import { useAuth } from '../auth'
+import ClauseGuardLogo from '../components/ClauseGuardLogo'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -12,9 +13,20 @@ export default function Dashboard() {
       <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Hero Section */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
+          {/* Existential Logo Emblem */}
+          <div className="relative inline-block mb-6 group cursor-pointer" onClick={() => navigate('/analyze')}>
+            {/* Atmospheric Background Aura */}
+            <div className="absolute -inset-6 rounded-full bg-gradient-to-r from-purple-600/35 via-indigo-500/25 to-pink-500/30 blur-2xl opacity-75 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <ClauseGuardLogo 
+              size={110} 
+              className="relative z-10 mx-auto group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_35px_rgba(168,85,247,0.5)]" 
+            />
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
             Analyze Contracts with <span className="text-gradient-purple">Full Confidence</span>
           </h1>
+
           <p className="text-slate-400 text-sm sm:text-base leading-relaxed mb-8">
             Welcome, {user?.name?.split(' ')[0] || 'User'}. Upload any agreement to translate complex clauses, evaluate financial commitments against your income, and detect missing legal protections.
           </p>
