@@ -84,14 +84,13 @@ export default function Analyze() {
       <div className="max-w-3xl mx-auto px-6 py-10">
         {/* Title */}
         <div className="mb-8">
-
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-purple-300 text-xs font-semibold uppercase tracking-wider mb-3">
-            <Zap size={13} className="text-purple-400" /> Contract Scanner
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-orange-700 text-xs font-bold uppercase tracking-wider mb-3">
+            <Zap size={14} className="text-orange-600" /> Contract Scanner
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
-            Audit a <span className="text-gradient-purple">Legal Document</span>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+            Audit a <span className="text-orange-600">Legal Document</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1.5 leading-relaxed">
+          <p className="text-sm text-slate-600 mt-1.5 leading-relaxed font-medium">
             Upload any contract to extract obligations, verify Indian law compliance, and detect omissions.
           </p>
         </div>
@@ -102,18 +101,18 @@ export default function Analyze() {
           onDragOver={handleDrag}
           onDragLeave={handleDrag}
           onDrop={handleDrop}
-          className={`card p-8 sm:p-10 text-center mb-6 border-2 border-dashed transition-all ${
-            dragActive ? 'border-purple-500 bg-purple-500/10 scale-[1.01]' : 'border-purple-500/20 hover:border-purple-500/40'
+          className={`card p-8 sm:p-10 text-center mb-6 border-2 border-dashed bg-white shadow-sm transition-all ${
+            dragActive ? 'border-orange-500 bg-orange-50/50 scale-[1.01]' : 'border-orange-300 hover:border-orange-500'
           }`}
         >
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-indigo-500/10 border border-purple-500/30 text-purple-300 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/20">
-            <UploadCloud size={26} className="stroke-[2.2]" />
+          <div className="w-14 h-14 rounded-2xl bg-orange-100 border border-orange-200 text-orange-600 flex items-center justify-center mx-auto mb-4 shadow-md shadow-orange-500/10">
+            <UploadCloud size={28} className="stroke-[2.2]" />
           </div>
           
-          <h3 className="text-base font-bold text-white mb-1">
+          <h3 className="text-base font-bold text-slate-900 mb-1">
             Drag & drop your contract here
           </h3>
-          <p className="text-xs text-slate-400 mb-6">
+          <p className="text-xs sm:text-sm text-slate-500 mb-6 font-medium">
             Supports PDF, Word (.docx), and Plain Text (.txt) up to 25 MB
           </p>
 
@@ -127,19 +126,19 @@ export default function Analyze() {
 
           <button 
             disabled={busy} 
-            className="btn-primary !px-7 !py-3 text-sm" 
+            className="btn-primary !px-8 !py-3.5 text-base font-bold shadow-lg shadow-orange-500/20" 
             onClick={() => fileRef.current?.click()}
           >
-            <FileText size={16} />
+            <FileText size={18} />
             <span>{busy ? 'Processing document…' : 'Browse File from Computer'}</span>
           </button>
         </div>
 
         {/* Optional Question */}
-        <div className="card p-5 mb-8 border-purple-500/15">
-          <label className="text-xs font-semibold text-slate-300 mb-2 block uppercase tracking-wider flex items-center justify-between">
+        <div className="card p-5 mb-8 bg-white border-slate-200 shadow-sm">
+          <label className="text-xs font-bold text-slate-700 mb-2 block uppercase tracking-wider flex items-center justify-between">
             <span>Ask a specific question (Optional)</span>
-            <span className="text-[11px] text-purple-400/80 font-normal normal-case">e.g. Is there any penal interest?</span>
+            <span className="text-[11px] text-orange-600 font-semibold normal-case">e.g. Is there any penal interest?</span>
           </label>
           <input 
             className="input" 
@@ -151,7 +150,7 @@ export default function Analyze() {
 
         {/* Error Alert */}
         {error && (
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2 mb-6">
+          <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold flex items-center gap-2 mb-6">
             <AlertCircle size={16} className="shrink-0" />
             <span>{error}</span>
           </div>
@@ -159,7 +158,7 @@ export default function Analyze() {
 
         {/* Samples */}
         <div>
-          <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+          <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
             Or test with sample agreements
           </h2>
 
@@ -171,16 +170,16 @@ export default function Analyze() {
                   key={s.id}
                   disabled={busy}
                   onClick={() => sample(s.id)}
-                  className="card p-4 text-left group hover:border-purple-500/40 flex items-start gap-3.5 transition-all duration-200"
+                  className="card p-4 text-left group bg-white border-slate-200 hover:border-orange-300 flex items-start gap-3.5 transition-all duration-200 shadow-sm cursor-pointer"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-300 flex items-center justify-center shrink-0 group-hover:bg-purple-500/20 group-hover:text-purple-200 transition-colors">
+                  <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 text-orange-600 flex items-center justify-center shrink-0 group-hover:bg-orange-100 transition-colors">
                     <Icon size={18} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors truncate">
+                    <p className="text-sm font-bold text-slate-900 group-hover:text-orange-600 transition-colors truncate">
                       {s.label}
                     </p>
-                    <p className="text-xs text-slate-400 mt-0.5 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-500 mt-0.5 line-clamp-2 leading-relaxed font-medium">
                       {s.desc}
                     </p>
                   </div>

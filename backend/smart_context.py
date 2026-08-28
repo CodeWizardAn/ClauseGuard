@@ -113,6 +113,84 @@ Return ONLY valid JSON matching this exact structure:
         return _fallback_questions(contract_type)
 
 
+def calculate_exact_affordability(income_raw, obligation_raw, debts_raw=0, dependents_raw=0, city="") -> tuple:
+    """
+    Calculates deterministic, granular 0-100 affordability score based on real financial math.
+    Returns: (score, badge, color, title)
+    """
+    def parse_num(val):
+        if isinstance(val, (int, float)):
+            return float(val)
+        nums = re.findall(r"[\d]+", str(val).replace(",", "").replace(".", ""))
+        return float(nums[0]) if nums else 0.0
+
+    income = parse_num(income_raw)
+    obligation = parse_num(obligation_raw)
+    debts = parse_num(debts_raw)
+    dependents = int(parse_num(dependents_raw))
+
+    if income <= 0:
+        return (8, "Extreme Risk", "red", "Severe Financial Risk — Unstated or Zero Income")
+
+    total_monthly_outflow = obligation + debts
+    dti_ratio = total_monthly_outflow / income
+
+    # City living expense estimation
+    city_lower = str(city).lower()
+    if any(m in city_lower for m in ["mumbai", "delhi", "bangalore", "bengaluru", "gurgaon", "noida", "bandra"]):
+        base_living_rate = 0.35
+    elif any(t in city_lower for t in ["pune", "hyderabad", "chennai", "kolkata", "ahmedabad", "kalyan", "thane"]):
+        base_living_rate = 0.28
+    else:
+        base_living_rate = 0.22
+
+    dep_factor = min(0.20, dependents * 0.05)
+    estimated_living_costs = income * (base_living_rate + dep_factor)
+    remaining_disposable = income - total_monthly_outflow - estimated_living_costs
+
+    # Continuous mathematical curve across 0 to 100
+    if dti_ratio <= 0.15:
+        base_score = 98.0 - (dti_ratio / 0.15) * 8.0  # 90 to 98
+    elif dti_ratio <= 0.30:
+        base_score = 90.0 - ((dti_ratio - 0.15) / 0.15) * 16.0  # 74 to 90
+    elif dti_ratio <= 0.42:
+        base_score = 74.0 - ((dti_ratio - 0.30) / 0.12) * 20.0  # 54 to 74
+    elif dti_ratio <= 0.60:
+        base_score = 54.0 - ((dti_ratio - 0.42) / 0.18) * 24.0  # 30 to 54
+    elif dti_ratio <= 0.85:
+        base_score = 30.0 - ((dti_ratio - 0.60) / 0.25) * 18.0  # 12 to 30
+    else:
+        base_score = max(3.0, 12.0 - (dti_ratio - 0.85) * 15.0)  # 3 to 12
+
+    # Buffer adjustment
+    if remaining_disposable < 0:
+        deficit_pct = abs(remaining_disposable) / income
+        base_score -= min(20.0, deficit_pct * 25.0)
+    elif remaining_disposable > income * 0.35:
+        base_score += min(5.0, (remaining_disposable / income) * 6.0)
+
+    final_score = int(round(max(3, min(99, base_score))))
+
+    if final_score >= 75:
+        badge = "Affordable & Safe"
+        color = "green"
+        title = "Comfortable & Affordable — Well Within Safe Financial Budget"
+    elif final_score >= 55:
+        badge = "Moderate Caution"
+        color = "yellow"
+        title = "Manageable with Moderate Budget Discipline"
+    elif final_score >= 35:
+        badge = "High Risk"
+        color = "orange"
+        title = "Significant Financial Strain & Elevated Default Risk"
+    else:
+        badge = "Extreme Risk"
+        color = "red"
+        title = "Severe Financial Risk — Exceeds Sustainable Income Limits"
+
+    return (final_score, badge, color, title)
+
+
 def generate_personalized_verdict(
     clauses: list[dict],
     contract_type: str,
@@ -130,8 +208,6 @@ def generate_personalized_verdict(
     ])
 
     answers_str = "\n".join([f"- {k}: {v}" for k, v in user_answers.items() if v is not None and str(v).strip()])
-
-
 
     prompt = f"""You are a blunt, deeply caring legal & financial advisor in India.
 Your client uploaded a {contract_type}.
@@ -195,30 +271,27 @@ Return ONLY valid JSON matching this exact structure:
             raw = re.sub(r"```json|```", "", raw).strip()
         data = json.loads(raw)
 
-        # Smart Mathematical Normalization & Sanity Check
-        # Extract ratio percent number if present
-        ratio_str = str(data.get("monthly_math", {}).get("ratio_pct", ""))
-        ratio_nums = re.findall(r"(\d+)", ratio_str)
-        ratio_val = int(ratio_nums[0]) if ratio_nums else None
+        # Apply exact mathematical calibration
+        income_val = user_answers.get("monthly_income") or user_answers.get("income") or data.get("monthly_math", {}).get("income", "")
+        obligation_val = data.get("monthly_math", {}).get("contract_obligation", "")
+        debts_val = user_answers.get("existing_debts", 0)
+        dependents_val = user_answers.get("dependents", 0)
+        city_val = user_answers.get("current_city") or user_answers.get("city", "")
 
-        # Check if ratio is very healthy (< 35%)
-        if ratio_val is not None and ratio_val <= 35:
-            data["verdict_badge"] = "Affordable & Safe"
-            data["verdict_badge_color"] = "green"
-            if not data.get("affordability_score") or data["affordability_score"] < 70:
-                data["affordability_score"] = max(75, 100 - ratio_val)
-            if "High Risk" in data.get("verdict_title", "") or "Caution" in data.get("verdict_title", ""):
-                data["verdict_title"] = "Comfortable & Affordable — Well Within Safe Budget"
-        elif ratio_val is not None and ratio_val > 48:
-            data["verdict_badge"] = "High Risk"
-            data["verdict_badge_color"] = "red"
-            data["affordability_score"] = min(35, max(5, 100 - ratio_val))
+        exact_score, exact_badge, exact_color, exact_title = calculate_exact_affordability(
+            income_val, obligation_val, debts_val, dependents_val, city_val
+        )
+
+        data["affordability_score"] = exact_score
+        data["verdict_badge"] = exact_badge
+        data["verdict_badge_color"] = exact_color
+        if not data.get("verdict_title") or "Assessment" in data.get("verdict_title", ""):
+            data["verdict_title"] = exact_title
 
         return data
     except Exception as e:
         print(f"[smart_context] generate_personalized_verdict error: {e}")
         return _fallback_verdict(user_answers, contract_type)
-
 
 
 def _fallback_questions(contract_type: str) -> dict:
@@ -271,22 +344,30 @@ def _fallback_questions(contract_type: str) -> dict:
 
 
 def _fallback_verdict(user_answers: dict, contract_type: str) -> dict:
-    income = user_answers.get("monthly_income") or user_answers.get("income") or "Not provided"
+    income = user_answers.get("monthly_income") or user_answers.get("income") or 0
     city = user_answers.get("current_city") or user_answers.get("city") or "your city"
+    debts = user_answers.get("existing_debts") or 0
+    dependents = user_answers.get("dependents") or 0
+    obligation = user_answers.get("contract_obligation") or 0
+
+    exact_score, exact_badge, exact_color, exact_title = calculate_exact_affordability(
+        income, obligation, debts, dependents, city
+    )
+
     return {
-        "verdict_title": f"Personalized Assessment for {contract_type}",
-        "verdict_badge": "Moderate Caution",
-        "verdict_badge_color": "yellow",
-        "affordability_score": 50,
+        "verdict_title": exact_title,
+        "verdict_badge": exact_badge,
+        "verdict_badge_color": exact_color,
+        "affordability_score": exact_score,
         "monthly_math": {
             "income": f"₹{income}" if str(income).isdigit() else str(income),
             "contract_obligation": "Per contract terms",
-            "ratio_pct": "Needs manual verification",
+            "ratio_pct": "Calculated via mathematical engine",
             "disposable_after_costs": "Evaluate against monthly expenses",
         },
         "personalized_story": (
             f"Based on your profile living in {city} with a stated income of ₹{income}, "
-            f"signing this {contract_type} requires careful verification of your fixed monthly expenses and savings buffers. "
+            f"signing this {contract_type} gives a calculated affordability score of {exact_score}/100. "
             "Ensure total debt commitments stay below 40% of your net income."
         ),
         "specific_warnings": [
@@ -302,3 +383,4 @@ def _fallback_verdict(user_answers: dict, contract_type: str) -> dict:
             "Limit termination lock-in to standard duration.",
         ],
     }
+

@@ -4,7 +4,6 @@ import { Shield } from 'lucide-react'
 import API from '../api'
 import { useAuth } from '../auth'
 import ClauseGuardLogo from '../components/ClauseGuardLogo'
-import authBg from '../assets/auth_bg.jpg'
 
 const EMAIL_OK = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/
 
@@ -78,44 +77,41 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050716] relative flex flex-col justify-between selection:bg-purple-500/30 selection:text-white overflow-hidden">
-      {/* High-Fidelity Cyber Security Lock Artwork Background */}
-      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
-        <img 
-          src={authBg} 
-          alt="ClauseGuard Security Architecture" 
-          className="w-full h-full object-cover object-center opacity-[0.45] filter saturate-110 brightness-90 blur-[0.5px] scale-105"
-        />
-        {/* Soft Radial Ambient Lighting to keep center card crisp and high-contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050716] via-[#050716]/45 to-[#050716]/85" />
-        <div className="absolute inset-0 bg-radial from-transparent via-[#050716]/35 to-[#050716]/90" />
-      </div>
+    <div className="min-h-screen bg-slate-50 relative flex flex-col justify-between selection:bg-orange-500/20 selection:text-orange-950 overflow-hidden">
+      {/* Sunlit Amber Glows */}
+      <div 
+        className="absolute top-0 right-0 w-[700px] h-[550px] rounded-full blur-[140px] opacity-40 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #fed7aa 0%, #ffedd5 45%, transparent 75%)' }}
+      />
+      <div 
+        className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full blur-[140px] opacity-35 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #ffedd5 0%, #fed7aa 40%, transparent 75%)' }}
+      />
 
-      {/* Top Header Bar with Top-Left Brand Logo & Name */}
+      {/* Top Header Bar */}
       <header className="relative z-20 px-8 sm:px-12 py-6 flex items-center justify-start">
-        <div className="flex items-center gap-3.5 group cursor-pointer">
+        <div className="flex items-center gap-3.5 group cursor-pointer" onClick={() => navigate('/')}>
           <ClauseGuardLogo 
-            size={46} 
-            className="group-hover:scale-105 transition-transform duration-200 drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]" 
+            size={42} 
+            className="group-hover:scale-105 transition-transform duration-200 drop-shadow-[0_0_15px_rgba(234,88,12,0.3)]" 
           />
-          <span className="font-extrabold text-2xl sm:text-3xl tracking-tight text-white drop-shadow-md">
-            Clause<span className="text-purple-400">Guard</span>
+          <span className="font-black text-2xl sm:text-3xl tracking-tight text-slate-900">
+            Clause<span className="text-orange-600">Guard</span>
           </span>
         </div>
       </header>
-
 
       {/* Center Authentication Card */}
       <div className="flex-1 flex items-center justify-center p-6 sm:p-8 relative z-10">
         <div className="w-full max-w-md">
 
-          {/* Form Card with Frosted Obsidian Finish */}
-          <form onSubmit={submit} className="rounded-3xl bg-[#090d24]/90 backdrop-blur-2xl p-7 sm:p-8 space-y-4 border border-white/20 shadow-2xl shadow-black/90">
+          {/* Form Card */}
+          <form onSubmit={submit} className="rounded-3xl bg-white p-7 sm:p-8 space-y-4 border border-slate-200 shadow-xl shadow-slate-200/50">
             <div className="mb-2">
-              <h2 className="text-2xl font-black text-white tracking-tight">
+              <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                 {isLogin ? 'Sign In' : 'Create Account'}
               </h2>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs sm:text-sm mt-1 font-medium">
                 {isLogin ? 'Enter your credentials to access your analyses.' : 'Set up your secure profile to analyze contracts.'}
               </p>
             </div>
@@ -123,45 +119,45 @@ export default function Auth() {
             {!isLogin && (
               <>
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Full name</label>
+                  <label className="text-xs font-bold text-slate-700 mb-1.5 block uppercase tracking-wider">Full name</label>
                   <input className="input" value={form.name} onChange={set('name')} placeholder="Your legal name" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Age</label>
+                    <label className="text-xs font-bold text-slate-700 mb-1.5 block uppercase tracking-wider">Age</label>
                     <input className="input" type="number" value={form.age} onChange={set('age')} placeholder="18" />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Mobile</label>
+                    <label className="text-xs font-bold text-slate-700 mb-1.5 block uppercase tracking-wider">Mobile</label>
                     <input className="input" value={form.phone} onChange={set('phone')} placeholder="10-digit number" />
                   </div>
                 </div>
               </>
             )}
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Email Address</label>
+              <label className="text-xs font-bold text-slate-700 mb-1.5 block uppercase tracking-wider">Email Address</label>
               <input className="input" type="email" value={form.email} onChange={set('email')} placeholder="you@domain.com" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-1.5 block uppercase tracking-wider">Password</label>
+              <label className="text-xs font-bold text-slate-700 mb-1.5 block uppercase tracking-wider">Password</label>
               <input className="input" type="password" value={form.password} onChange={set('password')} placeholder="Starts with capital letter" />
-              <p className="text-[11px] text-slate-500 mt-1.5">Minimum 6 characters. First letter capital (e.g. Pass12)</p>
+              <p className="text-[11px] text-slate-400 mt-1.5 font-medium">Minimum 6 characters. First letter capital (e.g. Pass12)</p>
             </div>
             {error && (
-              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
+              <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold">
                 {error}
               </div>
             )}
-            <button type="submit" disabled={busy} className="btn-primary w-full mt-2 py-3">
+            <button type="submit" disabled={busy} className="btn-primary w-full mt-2 !py-3.5 text-base font-bold shadow-lg shadow-orange-500/20">
               {busy ? 'Securing session…' : isLogin ? 'Sign In' : 'Create Account'}
             </button>
           </form>
 
-          <p className="text-center text-sm text-slate-400 mt-6">
+          <p className="text-center text-sm text-slate-600 mt-6 font-medium">
             {isLogin ? 'New to ClauseGuard?' : 'Already have an account?'}
             <button 
               type="button" 
-              className="text-purple-400 hover:text-purple-300 font-semibold ml-2 underline focus:outline-none" 
+              className="text-orange-600 hover:text-orange-700 font-bold ml-1.5 underline focus:outline-none" 
               onClick={() => { setIsLogin(!isLogin); setError('') }}
             >
               {isLogin ? 'Register now' : 'Sign in'}
@@ -170,7 +166,7 @@ export default function Auth() {
         </div>
       </div>
       <footer className="px-6 py-4 text-center">
-        <p className="text-xs text-slate-500 font-medium">Encrypted & Zero-Knowledge Contract Analysis · Indian Legal Framework</p>
+        <p className="text-xs text-slate-400 font-medium">Encrypted & Zero-Knowledge Contract Analysis · Indian Legal Framework</p>
       </footer>
     </div>
   )

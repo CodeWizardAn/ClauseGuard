@@ -54,25 +54,25 @@ export default function AppShell({ children }) {
 
 
   return (
-    <div className="min-h-screen app-bg flex flex-col selection:bg-purple-500/30 selection:text-white">
-      {/* Top Header Navigation matching Landing Page exactly */}
-      <header className="border-b border-white/[0.08] bg-[#060818]/95 backdrop-blur-md px-8 sm:px-12 py-6 sticky top-0 z-50">
+    <div className="min-h-screen app-bg flex flex-col selection:bg-orange-500/20 selection:text-orange-950">
+      {/* Top Header Navigation — Crisp White & Orange Professional Theme */}
+      <header className="border-b border-slate-200/80 bg-white/90 backdrop-blur-md px-8 sm:px-12 py-5 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
           {/* Left: Brand Logo & Navigation */}
-          <div className="flex items-center gap-12">
+          <div className="flex items-center gap-10">
             <Link to="/dashboard" className="flex items-center gap-3.5 group">
               <ClauseGuardLogo 
-                size={46} 
-                className="group-hover:scale-105 transition-transform duration-200 drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]" 
+                size={42} 
+                className="group-hover:scale-105 transition-transform duration-200 drop-shadow-[0_0_15px_rgba(234,88,12,0.3)]" 
               />
-              <span className="font-extrabold text-2xl sm:text-3xl tracking-tight text-white drop-shadow-md">
-                Clause<span className="text-purple-400">Guard</span>
+              <span className="font-black text-2xl sm:text-3xl tracking-tight text-slate-900">
+                Clause<span className="text-orange-600">Guard</span>
               </span>
             </Link>
 
             {user && (
-              <nav className="hidden lg:flex items-center gap-8">
+              <nav className="hidden lg:flex items-center gap-7">
                 {navLinks.map((link) => {
                   const active = location.pathname === link.path
                   return (
@@ -81,13 +81,13 @@ export default function AppShell({ children }) {
                       to={link.path}
                       className={`text-sm font-semibold transition-colors py-2 relative ${
                         active
-                          ? 'text-white font-bold'
-                          : 'text-slate-400 hover:text-slate-200'
+                          ? 'text-orange-600 font-bold'
+                          : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
                       {link.label}
                       {active && (
-                        <span className="absolute -bottom-[26px] left-0 right-0 h-[2.5px] bg-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.8)]" />
+                        <span className="absolute -bottom-[22px] left-0 right-0 h-[2.5px] bg-orange-500 rounded-full shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
                       )}
                     </Link>
                   )
@@ -98,36 +98,36 @@ export default function AppShell({ children }) {
 
           {/* Right: Direct Profile Link & Dedicated Smart Sign Out Button */}
           {user && (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3.5">
               <Link
                 to="/profile"
-                className="flex items-center gap-3 py-1.5 px-3 rounded-2xl hover:bg-white/[0.06] transition-all border border-transparent hover:border-white/10 group cursor-pointer"
+                className="flex items-center gap-3 py-1.5 px-3 rounded-2xl hover:bg-orange-50 transition-all border border-transparent hover:border-orange-200 group cursor-pointer"
                 title="View Profile & Security Settings"
               >
                 {user.avatar && user.avatar.startsWith('data:image') ? (
                   <img
                     src={user.avatar}
                     alt={user.name}
-                    className="w-9 h-9 rounded-full object-cover border border-purple-400/40 shrink-0 shadow-sm group-hover:scale-105 transition-transform"
+                    className="w-9 h-9 rounded-full object-cover border border-orange-400/40 shrink-0 shadow-sm group-hover:scale-105 transition-transform"
                   />
                 ) : (
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                     {initial}
                   </div>
                 )}
-                <span className="text-sm font-semibold text-slate-200 max-w-[140px] truncate hidden sm:inline group-hover:text-white transition-colors">
+                <span className="text-sm font-semibold text-slate-700 max-w-[140px] truncate hidden sm:inline group-hover:text-orange-600 transition-colors">
                   {user.name}
                 </span>
               </Link>
 
-              {/* Dedicated Smart Executive Logout Button */}
+              {/* Dedicated Sign Out Button */}
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-rose-400 hover:bg-rose-500/10 border border-white/10 hover:border-rose-500/30 transition-all cursor-pointer shadow-sm"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition-all cursor-pointer shadow-sm bg-white"
                 title="Sign out of ClauseGuard"
               >
-                <LogOut size={14} className="text-slate-400 group-hover:text-rose-400" />
+                <LogOut size={14} className="text-slate-500 group-hover:text-rose-600" />
                 <span className="hidden sm:inline">Sign Out</span>
               </button>
             </div>
@@ -135,27 +135,23 @@ export default function AppShell({ children }) {
         </div>
       </header>
 
-
-
-
-
       {/* Main Content Area */}
       <main className="flex-1">{children}</main>
 
-      {/* Comprehensive Clean Footer */}
-      <footer className="border-t border-white/[0.08] bg-[#050614] text-slate-400 mt-20 pt-12 pb-8 px-6">
+      {/* Comprehensive Clean Dark Slate Footer */}
+      <footer className="border-t border-slate-200 bg-slate-900 text-slate-300 mt-20 pt-12 pb-8 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {/* Col 1: Brand */}
             <div className="space-y-3">
               <div className="flex items-center gap-2.5">
                 <ClauseGuardLogo size={24} />
-                <span className="font-bold text-white tracking-tight">ClauseGuard</span>
+                <span className="font-bold text-white tracking-tight">Clause<span className="text-orange-400">Guard</span></span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
                 Plain-language document analysis and financial risk assessment for agreements, loans, and commercial contracts.
               </p>
-              <div className="text-[11px] text-purple-400 font-medium pt-1">
+              <div className="text-[11px] text-orange-400 font-semibold pt-1">
                 Zero-Knowledge Privacy · Client-Side Redacted
               </div>
             </div>
@@ -193,7 +189,7 @@ export default function AppShell({ children }) {
             </div>
           </div>
 
-          <div className="border-t border-white/[0.08] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+          <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
             <p>© 2026 ClauseGuard. All rights reserved.</p>
             <div className="flex items-center gap-2 text-slate-400">
               <span>Document Intelligence & Privacy</span>

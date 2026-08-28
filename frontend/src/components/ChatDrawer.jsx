@@ -3,12 +3,29 @@ import { Send, Bot, X, MessageSquare, Sparkles } from 'lucide-react'
 import API from '../api'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Pulse ring style injected once
+const PULSE_STYLE = `
+  @keyframes fabPulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.45); opacity: 0; }
+  }
+  .fab-pulse-ring {
+    animation: fabPulse 2.2s ease-in-out infinite;
+  }
+`
+
 export default function ChatDrawer({ contractId, lang, isOpen, setIsOpen, profile }) {
   const firstQ = profile?.question
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [hasOpened, setHasOpened] = useState(false)
   const messagesEndRef = useRef(null)
+
+  const handleOpen = () => {
+    setIsOpen(true)
+    setHasOpened(true)
+  }
 
   useEffect(() => {
     const role = profile?.role || 'someone reading this paper'
@@ -61,12 +78,36 @@ export default function ChatDrawer({ contractId, lang, isOpen, setIsOpen, profil
 
   return (
     <>
+      <style>{PULSE_STYLE}</style>
       {!isOpen && (
-        <button onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg z-40 flex items-center gap-2">
-          <MessageSquare size={20} />
-          <span className="text-sm font-medium hidden sm:inline">Ask simply</span>
-        </button>
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 3, type: 'spring', stiffness: 260, damping: 20 }}
+          className="fixed bottom-6 right-6 z-40"
+        >
+          {/* Pulse rings */}
+          {!hasOpened && (
+            <>
+              <span className="fab-pulse-ring absolute inset-0 rounded-full bg-orange-500/40 pointer-events-none" />
+              <span className="fab-pulse-ring absolute inset-0 rounded-full bg-orange-500/20 pointer-events-none" style={{ animationDelay: '0.6s' }} />
+            </>
+          )}
+          <div className="group relative">
+            <button
+              onClick={handleOpen}
+              className="bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-white px-5 py-3.5 rounded-full shadow-xl flex items-center gap-2.5 transition-all hover:shadow-orange-500/30 hover:scale-105"
+            >
+              <MessageSquare size={19} />
+              <span className="text-sm font-bold hidden sm:inline">Ask AI Assistant</span>
+            </button>
+            {/* Tooltip */}
+            <div className="absolute bottom-full right-0 mb-2.5 w-52 bg-slate-900 border border-slate-800 text-slate-100 text-xs font-medium rounded-xl px-3.5 py-2.5 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity shadow-2xl">
+              Ask anything about this contract in plain words
+              <div className="absolute top-full right-5 border-4 border-transparent border-t-slate-900" />
+            </div>
+          </div>
+        </motion.div>
       )}
 
       <AnimatePresence>
@@ -75,32 +116,32 @@ export default function ChatDrawer({ contractId, lang, isOpen, setIsOpen, profil
             initial={{ x: '100%', opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
-            className="fixed top-0 right-0 w-full sm:w-[420px] h-screen bg-gray-900 border-l border-gray-800 z-50 flex flex-col"
+            className="fixed top-0 right-0 w-full sm:w-[420px] h-screen bg-white border-l border-slate-200 z-50 flex flex-col shadow-2xl"
           >
-            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+            <div className="flex items-center justify-between p-4.5 border-b border-slate-100 bg-slate-50/70">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                  <Bot size={18} className="text-blue-400" />
+                <div className="w-9 h-9 bg-orange-100 border border-orange-200 rounded-xl flex items-center justify-center text-orange-600">
+                  <Bot size={20} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">Simple explainer</h3>
-                  <p className="text-xs text-gray-400">Short answers. No legal jargon.</p>
+                  <h3 className="text-sm font-bold text-slate-900">Contract Explainer</h3>
+                  <p className="text-xs text-slate-500 font-medium">Short answers. Zero legal jargon.</p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white p-1"><X size={20} /></button>
+              <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"><X size={20} /></button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-5">
+            <div className="flex-1 overflow-y-auto p-4 space-y-5 bg-slate-50/30">
               {messages.map(msg => (
                 <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[90%] rounded-2xl p-4 ${
-                    msg.role === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-800 text-gray-200 rounded-bl-none border border-gray-700'
+                  <div className={`max-w-[90%] rounded-2xl p-4 shadow-sm ${
+                    msg.role === 'user' ? 'bg-orange-600 text-white rounded-br-none font-medium' : 'bg-white text-slate-800 rounded-bl-none border border-slate-200'
                   }`}>
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
                     {msg.citations?.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-gray-700/50 flex flex-wrap gap-2">
+                      <div className="mt-3 pt-3 border-t border-slate-100 flex flex-wrap gap-2">
                         {msg.citations.map(cit => (
-                          <span key={cit} className="text-[10px] text-blue-300 bg-blue-500/10 px-2 py-1 rounded-md">Part {cit}</span>
+                          <span key={cit} className="text-[10px] font-bold text-orange-700 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-md">Part {cit}</span>
                         ))}
                       </div>
                     )}
@@ -109,27 +150,28 @@ export default function ChatDrawer({ contractId, lang, isOpen, setIsOpen, profil
                         const lastUser = [...messages].reverse().find(m => m.role === 'user')
                         send(lastUser?.content || 'Explain the last answer even more simply', true)
                       }}
-                        className="mt-3 text-[11px] text-blue-300 hover:text-white flex items-center gap-1">
-                        <Sparkles size={12} /> Even simpler
+                        className="mt-3 text-xs text-orange-600 hover:text-orange-700 font-bold flex items-center gap-1">
+                        <Sparkles size={13} /> Even simpler
                       </button>
                     )}
                   </div>
                 </div>
               ))}
               {isTyping && (
-                <div className="bg-gray-800 border border-gray-700 rounded-2xl p-4 w-20 flex gap-1">
-                  <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" />
-                  <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" />
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 w-20 flex gap-1.5 items-center shadow-sm">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-4 border-t border-gray-800">
-              <div className="flex flex-wrap gap-2 mb-3">
+            <div className="p-4 border-t border-slate-200 bg-white">
+              <div className="flex flex-wrap gap-1.5 mb-3">
                 {suggestions.map(s => (
                   <button key={s} onClick={() => send(s)}
-                    className="text-xs bg-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-full border border-gray-700">
+                    className="text-xs bg-slate-50 text-slate-700 hover:bg-orange-50 hover:text-orange-700 px-3 py-1.5 rounded-full border border-slate-200 transition-colors font-medium">
                     {s}
                   </button>
                 ))}
@@ -138,11 +180,11 @@ export default function ChatDrawer({ contractId, lang, isOpen, setIsOpen, profil
                 <input type="text" value={input} onChange={e => setInput(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && send()}
                   placeholder="Ask in plain words…"
-                  className="w-full bg-black border border-gray-700 rounded-xl py-3 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-blue-500" />
+                  className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-4 pr-12 text-sm text-slate-900 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20" />
                 <button onClick={() => send()} disabled={!input.trim() || isTyping}
-                  className="absolute right-2 p-2 text-blue-500 disabled:opacity-50"><Send size={18} /></button>
+                  className="absolute right-2 p-2 text-orange-600 disabled:opacity-40 hover:text-orange-700 transition-colors"><Send size={18} /></button>
               </div>
-              <p className="text-[10px] text-gray-500 mt-2 text-center">Not legal advice. Check with a licensed professional for important decisions.</p>
+              <p className="text-[10px] text-slate-400 mt-2 text-center font-medium">Not formal legal advice. Grounded strictly in your uploaded document.</p>
             </div>
           </motion.div>
         )}

@@ -47,7 +47,13 @@ app = FastAPI(title="ClauseGuard API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -329,7 +335,7 @@ class ChatQuery(BaseModel):
 
 
 @app.post("/chat/{contract_id}")
-def chat_with_contract(contract_id: str, payload: ChatQuery):
+def chat_with_contract(contract_id: str, payload: ChatQuery, current_user: dict = Depends(get_current_user)):
     query = payload.query.strip()
     if payload.simpler:
         query = f"Explain even more simply, like I am 12: {query}"

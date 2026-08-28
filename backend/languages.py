@@ -11,6 +11,6 @@ SUPPORTED_LANGUAGES = {
     "pa": "Punjabi",
 }
 
-# Production Multilingual Model active on Groq API
-FAST_MODEL = "qwen/qwen3.8-27b"
-REASONING_MODEL = "qwen/qwen3.8-27b"
+# Production High-Speed Models active on Groq API
+FAST_MODEL = "openai/gpt-oss-20b"
+REASONING_MODEL = "qwen/qwen3.6-27b"

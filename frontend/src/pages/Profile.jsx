@@ -99,16 +99,16 @@ export default function Profile() {
 
     setBusy(true)
     try {
-      const res = await API.post('/auth/change-password', {
+      await API.put('/auth/change-password', {
         current_password: currentPassword,
         new_password: newPassword,
       })
-      setPasswordMsg({ text: res.data.message || 'Password changed successfully.', type: 'success' })
+      setPasswordMsg({ text: 'Password updated successfully.', type: 'success' })
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
     } catch (err) {
-      setPasswordMsg({ text: err.response?.data?.detail || 'Failed to change password', type: 'error' })
+      setPasswordMsg({ text: err.response?.data?.detail || 'Failed to update password', type: 'error' })
     } finally {
       setBusy(false)
     }
@@ -119,83 +119,82 @@ export default function Profile() {
     setPinMsg({ text: '', type: '' })
 
     if (newPin !== confirmPin) {
-      setPinMsg({ text: 'New 4-digit PINs do not match', type: 'error' })
+      setPinMsg({ text: 'New PINs do not match', type: 'error' })
       return
     }
     if (!/^\d{4}$/.test(newPin)) {
-      setPinMsg({ text: 'PIN must be exactly 4 numeric digits', type: 'error' })
+      setPinMsg({ text: 'New PIN must be exactly 4 numeric digits', type: 'error' })
       return
     }
 
     setBusy(true)
     try {
-      const res = await API.post('/auth/change-pin', {
+      await API.put('/auth/change-pin', {
         current_pin: currentPin,
         new_pin: newPin,
       })
-      setPinMsg({ text: res.data.message || 'Vault PIN updated successfully.', type: 'success' })
+      setPinMsg({ text: 'Vault PIN updated successfully.', type: 'success' })
       setCurrentPin('')
       setNewPin('')
       setConfirmPin('')
     } catch (err) {
-      setPinMsg({ text: err.response?.data?.detail || 'Failed to change Vault PIN', type: 'error' })
+      setPinMsg({ text: err.response?.data?.detail || 'Failed to update PIN', type: 'error' })
     } finally {
       setBusy(false)
     }
   }
 
-  const userInitial = user?.name ? user.name.trim().charAt(0).toUpperCase() : 'U'
+  const initial = name ? name.trim().charAt(0).toUpperCase() : 'U'
 
   return (
     <AppShell>
-      <div className="max-w-2xl mx-auto px-6 py-10">
-        {/* Prominent Aligned Header with Back Button */}
-        <div className="flex items-center gap-4 mb-8 pb-6 border-b border-white/[0.08]">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-purple-500/30 text-slate-300 hover:text-white flex items-center justify-center transition-all shrink-0"
-            title="Back to Dashboard"
-          >
-            <ArrowLeft size={18} />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">Account Settings</h1>
-            <p className="text-xs text-slate-400 mt-0.5">Manage your personal profile, credentials, and vault security.</p>
-          </div>
+      <div className="max-w-4xl mx-auto px-6 py-10">
+        
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+            Account & <span className="text-orange-600">Security Center</span>
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed font-medium">
+            Manage your personal profile, authentication credentials, and 4-digit Vault PIN.
+          </p>
         </div>
 
-        {/* Vertical Options Stack */}
-        <div className="space-y-6">
-
-          {/* Section 1: General Profile */}
-          <form onSubmit={saveProfileInfo} className="card p-6 border-white/10 space-y-5">
-            <div className="border-b border-white/10 pb-3">
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <User size={16} className="text-purple-400" /> General Profile
+        <div className="space-y-8">
+          
+          {/* Section 1: Profile Information & Avatar */}
+          <form onSubmit={saveProfileInfo} className="card p-6 bg-white border-slate-200 shadow-sm space-y-6">
+            <div className="border-b border-slate-100 pb-3">
+              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <User size={17} className="text-orange-600" /> Personal Identity & Role
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">Your identity and role preferences across the platform.</p>
+              <p className="text-xs text-slate-500 mt-0.5 font-medium">
+                Personalize how ClauseGuard tailors contract insights and affordability reports to your persona.
+              </p>
             </div>
 
-            {/* Clean Avatar Uploader */}
-            <div className="flex items-center gap-5 py-2">
-              {avatar && avatar.startsWith('data:image') ? (
-                <img 
-                  src={avatar} 
-                  alt="Profile" 
-                  className="w-16 h-16 rounded-2xl object-cover border border-purple-500/40 shadow-lg shadow-purple-500/15 shrink-0" 
-                />
-              ) : (
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-700 text-white text-2xl font-bold flex items-center justify-center shadow-lg shrink-0">
-                  {userInitial}
-                </div>
-              )}
+            {/* Profile Avatar Upload */}
+            <div className="flex flex-col sm:flex-row items-center gap-5">
+              <div className="relative group shrink-0">
+                {avatar && avatar.startsWith('data:image') ? (
+                  <img
+                    src={avatar}
+                    alt={name}
+                    className="w-20 h-20 rounded-full object-cover border-2 border-orange-500 shadow-md"
+                  />
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 text-white font-black text-2xl flex items-center justify-center shadow-md">
+                    {initial}
+                  </div>
+                )}
+              </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
+              <div className="space-y-2 text-center sm:text-left">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="btn-secondary !py-1.5 !px-3 text-xs flex items-center gap-1.5"
+                    className="px-3.5 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold border border-orange-200 text-xs transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
                   >
                     <Upload size={13} />
                     <span>Upload New Photo</span>
@@ -204,14 +203,14 @@ export default function Profile() {
                     <button
                       type="button"
                       onClick={removeAvatar}
-                      className="px-3 py-1.5 rounded-xl text-xs text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors flex items-center gap-1"
+                      className="px-3 py-1.5 rounded-xl text-xs text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors flex items-center gap-1 font-semibold cursor-pointer"
                     >
                       <Trash2 size={13} />
                       <span>Remove</span>
                     </button>
                   )}
                 </div>
-                <p className="text-[11px] text-slate-500">Supports JPG, PNG or WebP under 2 MB.</p>
+                <p className="text-[11px] text-slate-500 font-medium">Supports JPG, PNG or WebP under 2 MB.</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -224,12 +223,12 @@ export default function Profile() {
 
             {/* Name */}
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-1.5 block">Full Name</label>
+              <label className="text-xs font-bold text-slate-700 mb-1.5 block">Full Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                className="input text-sm"
+                className="input text-sm font-semibold text-slate-900"
                 required
               />
             </div>
@@ -237,30 +236,30 @@ export default function Profile() {
             {/* Age & Role */}
             <div className="grid sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1.5 block">Age</label>
+                <label className="text-xs font-bold text-slate-700 mb-1.5 block">Age</label>
                 <input
                   type="number"
                   min="13"
                   max="120"
                   value={age}
                   onChange={e => setAge(e.target.value)}
-                  className="input text-sm"
+                  className="input text-sm font-semibold text-slate-900"
                   required
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1.5 block">Primary Role</label>
+                <label className="text-xs font-bold text-slate-700 mb-1.5 block">Primary Role</label>
                 <select
                   value={role}
                   onChange={e => setRole(e.target.value)}
-                  className="input text-xs"
+                  className="input text-xs font-semibold text-slate-900 bg-white"
                 >
-                  <option value="Everyday Citizen" className="bg-[#0b0e1e]">Everyday Citizen</option>
-                  <option value="Tenant / Renter" className="bg-[#0b0e1e]">Tenant / Renter</option>
-                  <option value="Home / Property Buyer" className="bg-[#0b0e1e]">Home / Property Buyer</option>
-                  <option value="Salaried Employee" className="bg-[#0b0e1e]">Salaried Employee</option>
-                  <option value="Freelancer / Consultant" className="bg-[#0b0e1e]">Freelancer / Consultant</option>
-                  <option value="Business Owner / MSME" className="bg-[#0b0e1e]">Business Owner / MSME</option>
+                  <option value="Everyday Citizen">Everyday Citizen</option>
+                  <option value="Tenant / Renter">Tenant / Renter</option>
+                  <option value="Home / Property Buyer">Home / Property Buyer</option>
+                  <option value="Salaried Employee">Salaried Employee</option>
+                  <option value="Freelancer / Consultant">Freelancer / Consultant</option>
+                  <option value="Business Owner / MSME">Business Owner / MSME</option>
                 </select>
               </div>
             </div>
@@ -268,28 +267,28 @@ export default function Profile() {
             {/* Read-Only Account Contact Info */}
             <div className="grid sm:grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="text-xs font-semibold text-slate-400 mb-1.5 block">Registered Email</label>
+                <label className="text-xs font-bold text-slate-500 mb-1.5 block">Registered Email</label>
                 <input
                   type="text"
                   value={user?.email || ''}
                   disabled
-                  className="input text-xs !bg-slate-900/50 !text-slate-400 !cursor-not-allowed"
+                  className="input text-xs !bg-slate-50 !text-slate-500 !border-slate-200 !cursor-not-allowed font-medium"
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-400 mb-1.5 block">Mobile Number</label>
+                <label className="text-xs font-bold text-slate-500 mb-1.5 block">Mobile Number</label>
                 <input
                   type="text"
                   value={user?.phone_masked || '******'}
                   disabled
-                  className="input text-xs !bg-slate-900/50 !text-slate-400 !cursor-not-allowed"
+                  className="input text-xs !bg-slate-50 !text-slate-500 !border-slate-200 !cursor-not-allowed font-medium"
                 />
               </div>
             </div>
 
             {profileMsg.text && (
-              <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
-                profileMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-red-500/10 border-red-500/30 text-red-300'
+              <div className={`p-3 rounded-xl border text-xs font-bold flex items-center gap-2 ${
+                profileMsg.type === 'success' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-red-50 border-red-200 text-red-800'
               }`}>
                 {profileMsg.type === 'success' ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
                 <span>{profileMsg.text}</span>
@@ -299,30 +298,30 @@ export default function Profile() {
             <button
               type="submit"
               disabled={busy}
-              className="btn-primary text-xs !py-2.5 !px-5"
+              className="btn-primary text-xs !py-2.5 !px-5 font-bold shadow-md shadow-orange-500/20"
             >
               {busy ? 'Saving…' : 'Save Changes'}
             </button>
           </form>
 
           {/* Section 2: Password Security */}
-          <form onSubmit={handlePasswordChange} className="card p-6 border-white/10 space-y-4">
-            <div className="border-b border-white/10 pb-3">
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <KeyRound size={16} className="text-purple-400" /> Password & Authentication
+          <form onSubmit={handlePasswordChange} className="card p-6 bg-white border-slate-200 shadow-sm space-y-4">
+            <div className="border-b border-slate-100 pb-3">
+              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <KeyRound size={17} className="text-orange-600" /> Password & Authentication
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5 font-medium">
                 Update your login password. Current password is required for verification.
               </p>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-1 block">Current Password</label>
+              <label className="text-xs font-bold text-slate-700 mb-1 block">Current Password</label>
               <input
                 type="password"
                 value={currentPassword}
                 onChange={e => setCurrentPassword(e.target.value)}
-                className="input text-xs"
+                className="input text-xs text-slate-900"
                 placeholder="Enter current password"
                 required
               />
@@ -330,24 +329,24 @@ export default function Profile() {
 
             <div className="grid sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">New Password</label>
+                <label className="text-xs font-bold text-slate-700 mb-1 block">New Password</label>
                 <input
                   type="password"
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
-                  className="input text-xs"
+                  className="input text-xs text-slate-900"
                   placeholder="Min 6 characters with 1 capital letter"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">Confirm New Password</label>
+                <label className="text-xs font-bold text-slate-700 mb-1 block">Confirm New Password</label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
-                  className="input text-xs"
+                  className="input text-xs text-slate-900"
                   placeholder="Re-enter new password"
                   required
                 />
@@ -355,10 +354,10 @@ export default function Profile() {
             </div>
 
             {passwordMsg.text && (
-              <div className={`p-2.5 rounded-lg border text-xs flex items-center gap-2 ${
-                passwordMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-red-500/10 border-red-500/30 text-red-300'
+              <div className={`p-3 rounded-xl border text-xs font-bold flex items-center gap-2 ${
+                passwordMsg.type === 'success' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-red-50 border-red-200 text-red-800'
               }`}>
-                {passwordMsg.type === 'success' ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
+                {passwordMsg.type === 'success' ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
                 <span>{passwordMsg.text}</span>
               </div>
             )}
@@ -366,60 +365,61 @@ export default function Profile() {
             <button
               type="submit"
               disabled={busy || !currentPassword || !newPassword}
-              className="btn-secondary text-xs !py-2 !px-4"
+              className="btn-primary text-xs !py-2.5 !px-5 font-bold shadow-md shadow-orange-500/20"
             >
-              Update Password
+              {busy ? 'Updating Password…' : 'Update Password'}
             </button>
           </form>
 
-          {/* Section 3: Vault PIN */}
-          <form onSubmit={handlePinChange} className="card p-6 border-white/10 space-y-4">
-            <div className="border-b border-white/10 pb-3">
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <Lock size={16} className="text-purple-400" /> Document Vault Security Lock
+          {/* Section 3: 4-Digit Vault PIN */}
+          <form onSubmit={handlePinChange} className="card p-6 bg-white border-slate-200 shadow-sm space-y-4">
+            <div className="border-b border-slate-100 pb-3">
+              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Lock size={17} className="text-orange-600" /> Private Vault 4-Digit PIN
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                The 4-digit PIN used to decrypt and access saved contract reports.
+              <p className="text-xs text-slate-500 mt-0.5 font-medium">
+                Your PIN encrypts and safeguards your stored document analyses in the zero-knowledge vault.
               </p>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-1 block">Current 4-Digit PIN</label>
+              <label className="text-xs font-bold text-slate-700 mb-1 block">Current PIN</label>
               <input
                 type="password"
                 inputMode="numeric"
                 maxLength={4}
                 value={currentPin}
                 onChange={e => setCurrentPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                className="input text-center text-sm font-mono tracking-widest max-w-xs"
+                className="input text-xs !tracking-[0.4em] font-mono text-slate-900"
                 placeholder="••••"
                 required
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">New 4-Digit PIN</label>
+                <label className="text-xs font-bold text-slate-700 mb-1 block">New 4-Digit PIN</label>
                 <input
                   type="password"
                   inputMode="numeric"
                   maxLength={4}
                   value={newPin}
                   onChange={e => setNewPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                  className="input text-center text-sm font-mono tracking-widest"
+                  className="input text-xs !tracking-[0.4em] font-mono text-slate-900"
                   placeholder="••••"
                   required
                 />
               </div>
+
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">Confirm New PIN</label>
+                <label className="text-xs font-bold text-slate-700 mb-1 block">Confirm New PIN</label>
                 <input
                   type="password"
                   inputMode="numeric"
                   maxLength={4}
                   value={confirmPin}
                   onChange={e => setConfirmPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                  className="input text-center text-sm font-mono tracking-widest"
+                  className="input text-xs !tracking-[0.4em] font-mono text-slate-900"
                   placeholder="••••"
                   required
                 />
@@ -427,20 +427,20 @@ export default function Profile() {
             </div>
 
             {pinMsg.text && (
-              <div className={`p-2.5 rounded-lg border text-xs flex items-center gap-2 ${
-                pinMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-red-500/10 border-red-500/30 text-red-300'
+              <div className={`p-3 rounded-xl border text-xs font-bold flex items-center gap-2 ${
+                pinMsg.type === 'success' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-red-50 border-red-200 text-red-800'
               }`}>
-                {pinMsg.type === 'success' ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
+                {pinMsg.type === 'success' ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
                 <span>{pinMsg.text}</span>
               </div>
             )}
 
             <button
               type="submit"
-              disabled={busy || currentPin.length !== 4 || newPin.length !== 4}
-              className="btn-secondary text-xs !py-2 !px-4"
+              disabled={busy || !currentPin || newPin.length !== 4}
+              className="btn-primary text-xs !py-2.5 !px-5 font-bold shadow-md shadow-orange-500/20"
             >
-              Update Vault PIN
+              {busy ? 'Updating PIN…' : 'Update Vault PIN'}
             </button>
           </form>
 

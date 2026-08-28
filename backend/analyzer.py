@@ -131,8 +131,7 @@ Return ONLY valid JSON matching this schema:
 
     result = None
     if client:
-        # Multi-model resilience pool for high-throughput Groq execution
-        candidate_models = [REASONING_MODEL, "llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
+        candidate_models = ["openai/gpt-oss-20b", "qwen/qwen3.6-27b", "groq/compound-mini"]
         for model_name in candidate_models:
             for attempt in range(2):
                 try:

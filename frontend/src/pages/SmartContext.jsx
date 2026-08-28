@@ -23,7 +23,6 @@ export default function SmartContext() {
         setLoading(true)
         const res = await API.get(`/smart-questions/${contractId}`)
         setData(res.data)
-        // Initialize default answers if provided
         const initial = {}
         res.data?.questions?.forEach(q => {
           initial[q.id] = q.default_value || ''
@@ -31,7 +30,6 @@ export default function SmartContext() {
         setAnswers(initial)
       } catch (err) {
         console.error('Failed to load smart questions:', err)
-        // If question extraction fails, allow navigating to analysis directly
         navigate(`/analysis/${contractId}`, { replace: true })
       } finally {
         setLoading(false)
@@ -53,7 +51,6 @@ export default function SmartContext() {
       navigate(`/analysis/${contractId}`)
     } catch (err) {
       console.error('Failed to submit smart verdict:', err)
-      // Even if verdict calculation fails, proceed to analysis
       navigate(`/analysis/${contractId}`)
     } finally {
       setSubmitting(false)
@@ -68,11 +65,11 @@ export default function SmartContext() {
     return (
       <AppShell>
         <div className="max-w-2xl mx-auto px-6 py-20 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-[#c4a574]/10 border border-[#c4a574]/30 flex items-center justify-center mx-auto mb-4 animate-bounce">
-            <Sparkles className="text-[#c4a574]" size={24} />
+          <div className="w-14 h-14 rounded-2xl bg-orange-100 border border-orange-200 flex items-center justify-center mx-auto mb-4 animate-bounce text-orange-600">
+            <Sparkles size={28} />
           </div>
-          <h2 className="text-xl font-semibold text-[#f4f1ea] mb-2">Reading your document's numbers…</h2>
-          <p className="text-stone-400 text-sm">Identifying payment amounts, terms, and location constraints.</p>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">Reading your document's numbers…</h2>
+          <p className="text-slate-500 text-sm font-medium">Identifying payment amounts, terms, and location constraints.</p>
         </div>
       </AppShell>
     )
@@ -87,35 +84,35 @@ export default function SmartContext() {
       <div className="max-w-2xl mx-auto px-6 py-8 pb-20">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-zinc-100 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             Financial & Contextual Details
           </h1>
-          <p className="text-xs text-zinc-400 mt-1 max-w-lg leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-lg leading-relaxed font-medium">
             Answer a few quick questions so we can calculate exact affordability ratios against the obligations extracted from this agreement.
           </p>
         </div>
 
         {/* Detected Contract Snapshot */}
         {(summary.primary_obligation || badges.length > 0) && (
-          <div className="card p-4.5 mb-6 border-zinc-800 bg-zinc-900/40">
-            <div className="flex items-center gap-2 mb-2.5">
-              <ShieldCheck size={15} className="text-zinc-400" />
-              <p className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">Extracted Obligations</p>
+          <div className="card p-5 mb-6 bg-white border-slate-200 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <ShieldCheck size={16} className="text-orange-600" />
+              <p className="text-xs uppercase tracking-wider text-slate-600 font-bold">Extracted Obligations</p>
             </div>
             
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-2.5">
               {badges.map((b, i) => (
-                <div key={i} className="bg-zinc-950/80 rounded-lg p-2.5 border border-zinc-800">
-                  <p className="text-[11px] text-zinc-500 mb-0.5">{b.label}</p>
-                  <p className="text-xs font-semibold text-zinc-200 truncate">{b.value}</p>
+                <div key={i} className="bg-slate-50 rounded-xl p-3 border border-slate-200">
+                  <p className="text-[11px] text-slate-500 font-medium mb-0.5">{b.label}</p>
+                  <p className="text-xs font-bold text-slate-900 truncate">{b.value}</p>
                 </div>
               ))}
             </div>
 
             {summary.key_risk_factor && (
-              <p className="text-xs text-zinc-300 flex items-start gap-1.5 mt-2 bg-zinc-950 p-2.5 rounded border border-zinc-800">
-                <AlertTriangle size={13} className="shrink-0 mt-0.5 text-amber-400" />
-                <span><strong className="text-zinc-200">Key Note:</strong> {summary.key_risk_factor}</span>
+              <p className="text-xs text-slate-700 flex items-start gap-2 mt-3 bg-amber-50/80 p-3 rounded-xl border border-amber-200 font-medium">
+                <AlertTriangle size={15} className="shrink-0 mt-0.5 text-amber-600" />
+                <span><strong className="text-slate-900 font-bold">Key Note:</strong> {summary.key_risk_factor}</span>
               </p>
             )}
           </div>
@@ -133,23 +130,23 @@ export default function SmartContext() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.08 }}
-                className="card p-5 space-y-2 hover:border-stone-700 transition-colors"
+                className="card p-5 space-y-2 bg-white border-slate-200 shadow-sm hover:border-orange-300 transition-colors"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <label htmlFor={q.id} className="block text-sm font-medium text-[#f4f1ea]">
+                  <label htmlFor={q.id} className="block text-sm font-bold text-slate-900">
                     {q.question}
-                    {q.required && <span className="text-red-400 ml-1">*</span>}
+                    {q.required && <span className="text-red-600 ml-1">*</span>}
                   </label>
                 </div>
 
                 {q.subtitle && (
-                  <p className="text-xs text-stone-400 leading-relaxed">{q.subtitle}</p>
+                  <p className="text-xs text-slate-500 font-medium leading-relaxed">{q.subtitle}</p>
                 )}
 
                 {/* Input Types */}
                 {q.type === 'currency' ? (
                   <div className="relative mt-2">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 font-semibold text-sm">₹</span>
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₹</span>
                     <input
                       id={q.id}
                       type="number"
@@ -159,12 +156,12 @@ export default function SmartContext() {
                       value={val}
                       onChange={e => handleInputChange(q.id, e.target.value)}
                       placeholder={q.placeholder || 'e.g. 25000'}
-                      className="input !pl-8 w-full text-base font-medium"
+                      className="input !pl-8 w-full text-base font-bold text-slate-900"
                     />
                   </div>
                 ) : q.type === 'number' ? (
                   <div className="relative mt-2">
-                    <Users size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+                    <Users size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                       id={q.id}
                       type="number"
@@ -174,13 +171,13 @@ export default function SmartContext() {
                       value={val}
                       onChange={e => handleInputChange(q.id, e.target.value)}
                       placeholder={q.placeholder || 'e.g. 2'}
-                      className="input !pl-9 w-full text-base font-medium"
+                      className="input !pl-9 w-full text-base font-bold text-slate-900"
                     />
                   </div>
                 ) : (
                   <div>
                     <div className="relative mt-2">
-                      <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+                      <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                       <input
                         id={q.id}
                         type="text"
@@ -188,10 +185,10 @@ export default function SmartContext() {
                         value={val}
                         onChange={e => handleInputChange(q.id, e.target.value)}
                         placeholder={q.placeholder || 'e.g. Kalyan, Mumbai'}
-                        className="input !pl-9 w-full text-base font-medium"
+                        className="input !pl-9 w-full text-base font-bold text-slate-900"
                       />
                     </div>
-                    {/* Quick City suggestions if question is about city */}
+                    {/* Quick City suggestions */}
                     {q.id.includes('city') && (
                       <div className="flex flex-wrap gap-1.5 mt-2.5">
                         {POPULAR_CITIES.map(city => (
@@ -199,10 +196,10 @@ export default function SmartContext() {
                             type="button"
                             key={city}
                             onClick={() => handleInputChange(q.id, city)}
-                            className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
+                            className={`text-xs px-3 py-1 rounded-full border transition-all cursor-pointer font-semibold ${
                               val === city
-                                ? 'bg-[#c4a574] text-[#0c1118] font-semibold border-[#c4a574]'
-                                : 'bg-white/5 text-stone-400 border-white/10 hover:border-stone-500 hover:text-white'
+                                ? 'bg-orange-600 text-white font-bold border-orange-600 shadow-sm'
+                                : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-orange-300 hover:text-orange-600'
                             }`}
                           >
                             {city}
@@ -216,14 +213,14 @@ export default function SmartContext() {
             )
           })}
 
-          {error && <p className="text-sm text-red-400 text-center">{error}</p>}
+          {error && <p className="text-sm text-red-600 font-bold text-center">{error}</p>}
 
           {/* Action Buttons */}
           <div className="pt-4 flex flex-col sm:flex-row items-center gap-3">
             <button
               type="submit"
               disabled={submitting}
-              className="btn-primary w-full sm:flex-1 !py-3 flex items-center justify-center gap-2 text-base font-semibold shadow-lg shadow-[#c4a574]/10"
+              className="btn-primary w-full sm:flex-1 !py-3.5 flex items-center justify-center gap-2 text-base font-bold shadow-lg shadow-orange-500/20"
             >
               {submitting ? (
                 'Personalizing your advice…'
@@ -239,7 +236,7 @@ export default function SmartContext() {
               type="button"
               disabled={submitting}
               onClick={handleSkip}
-              className="w-full sm:w-auto px-5 py-3 text-sm text-stone-400 hover:text-white transition-colors"
+              className="w-full sm:w-auto px-5 py-3 text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors"
             >
               Skip for now →
             </button>

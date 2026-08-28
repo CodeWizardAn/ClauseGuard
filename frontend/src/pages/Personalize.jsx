@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Shield, ArrowRight, User, AlertTriangle, Languages, HelpCircle } from 'lucide-react'
 import API from '../api'
 import { LANGUAGES, saveLang } from '../languages'
+import AppShell from '../components/AppShell'
 
 const ROLES = [
   { id: 'tenant', label: 'I am renting / I am the tenant' },
@@ -53,25 +54,25 @@ export default function Personalize() {
   }
 
   return (
-    <div className="min-h-screen bg-black px-4 py-12">
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-            <Shield size={18} className="text-white" />
+    <AppShell>
+      <div className="max-w-2xl mx-auto px-4 py-12">
+        <div className="flex items-center gap-3.5 mb-8">
+          <div className="w-11 h-11 bg-orange-100 border border-orange-200 text-orange-600 rounded-2xl flex items-center justify-center shadow-sm">
+            <Shield size={22} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Tell us about you</h1>
-            <p className="text-sm text-gray-500">We use this to explain the paper in your words. We do not save your name or phone number.</p>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Tell us about you</h1>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">We use this to explain the paper in your words. Zero PII stored.</p>
           </div>
         </div>
 
-        <form onSubmit={submit} className="space-y-8 bg-gray-900/60 border border-gray-800 rounded-3xl p-8">
+        <form onSubmit={submit} className="space-y-8 bg-white border border-slate-200 rounded-3xl p-7 sm:p-8 shadow-sm">
           <section>
-            <h2 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2"><User size={16} /> Who are you in this document?</h2>
+            <h2 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2 uppercase tracking-wider"><User size={16} className="text-orange-600" /> Who are you in this document?</h2>
             <div className="grid gap-2">
               {ROLES.map(r => (
                 <button type="button" key={r.id} onClick={() => setRole(r.id)}
-                  className={`text-left px-4 py-3 rounded-xl text-sm border ${role === r.id ? 'border-blue-500 bg-blue-500/10 text-white' : 'border-gray-800 text-gray-400 hover:border-gray-600'}`}>
+                  className={`text-left px-4 py-3 rounded-xl text-sm border transition-all ${role === r.id ? 'border-orange-500 bg-orange-50 text-orange-950 font-bold shadow-sm' : 'border-slate-200 text-slate-700 hover:border-orange-300 hover:bg-slate-50 font-medium'}`}>
                   {r.label}
                 </button>
               ))}
@@ -79,11 +80,11 @@ export default function Personalize() {
           </section>
 
           <section>
-            <h2 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2"><AlertTriangle size={16} /> What worries you most?</h2>
+            <h2 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2 uppercase tracking-wider"><AlertTriangle size={16} className="text-amber-600" /> What worries you most?</h2>
             <div className="grid sm:grid-cols-2 gap-2">
               {WORRIES.map(w => (
                 <button type="button" key={w.id} onClick={() => setWorry(w.id)}
-                  className={`text-left px-4 py-3 rounded-xl text-sm border ${worry === w.id ? 'border-blue-500 bg-blue-500/10 text-white' : 'border-gray-800 text-gray-400 hover:border-gray-600'}`}>
+                  className={`text-left px-4 py-3 rounded-xl text-sm border transition-all ${worry === w.id ? 'border-orange-500 bg-orange-50 text-orange-950 font-bold shadow-sm' : 'border-slate-200 text-slate-700 hover:border-orange-300 hover:bg-slate-50 font-medium'}`}>
                   {w.label}
                 </button>
               ))}
@@ -91,26 +92,26 @@ export default function Personalize() {
           </section>
 
           <section>
-            <h2 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2"><Languages size={16} /> Language for explanations</h2>
+            <h2 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2 uppercase tracking-wider"><Languages size={16} className="text-orange-600" /> Language for explanations</h2>
             <select value={language} onChange={e => setLanguage(e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-sm text-white">
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 font-semibold focus:outline-none focus:border-orange-500">
               {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
             </select>
           </section>
 
           <section>
-            <h2 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2"><HelpCircle size={16} /> One question you want answered simply</h2>
+            <h2 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2 uppercase tracking-wider"><HelpCircle size={16} className="text-orange-600" /> One question you want answered simply</h2>
             <textarea value={question} onChange={e => setQuestion(e.target.value)} rows={3}
               placeholder="Example: Can they throw me out without notice?"
-              className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600" />
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500" />
           </section>
 
-          <button disabled={saving} className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-semibold disabled:opacity-50">
-            {saving ? 'Saving…' : 'Explain this document for me'}
+          <button disabled={saving} className="btn-primary w-full !py-3.5 text-base font-bold shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2">
+            <span>{saving ? 'Saving…' : 'Explain this document for me'}</span>
             <ArrowRight size={18} />
           </button>
         </form>
       </div>
-    </div>
+    </AppShell>
   )
 }
